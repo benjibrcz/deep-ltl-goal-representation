@@ -31,7 +31,7 @@ docker build -t deepltl .
 To run the image while preserving trained models and logs, you can use the following command to mount the `experiments` directory:
 ```bash
 mkdir experiments
-docker run -it --mount type=bind,src<="$(pwd)/experiments",target=/deep-ltl/experiments deepltl
+docker run -it --mount type=bind,src="$(pwd)/experiments",target=/deep-ltl/experiments deepltl
 ```
 
 ## Training
