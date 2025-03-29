@@ -31,7 +31,7 @@ deterministic = False
 
 env = make_env(env_name, sampler, render_mode=None)
 config = model_configs[env_name]
-model_store = ModelStore(env_name, exp, seed, None)
+model_store = ModelStore(env_name, exp, seed)
 training_status = model_store.load_training_status(map_location='cpu')
 print(training_status['curriculum_stage'])
 model_store.load_vocab()

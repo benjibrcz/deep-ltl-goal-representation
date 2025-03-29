@@ -11,18 +11,14 @@ from preprocessing import VOCAB, reset_vocab
 
 
 class ModelStore:
-    def __init__(self, env: str, name: str, seed: int, pretraining_experiment: str | None):
+    def __init__(self, env: str, name: str, seed: int):
         self.path = utils.get_experiment_path(env, name, seed)
         self.eval_results_path = utils.get_eval_results_path(env, name, seed)
-        if pretraining_experiment:
-            self.pretraining_experiment_path = utils.get_pretraining_experiment_path(env, pretraining_experiment, seed)
-        else:
-            self.pretraining_experiment_path = None
 
     @classmethod
     def from_config(cls, config: argparse.Namespace) -> 'ModelStore':
         exp = config.experiment
-        return cls(exp.env, exp.name, exp.seed, config.pretraining_experiment)
+        return cls(exp.env, exp.name, exp.seed)
 
     def save_training_status(self, status: dict[str, any]):
         torch.save(status, f'{self.path}/status.pth')

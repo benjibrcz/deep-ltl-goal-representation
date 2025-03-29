@@ -42,7 +42,7 @@ deterministic = False
 
 env = make_env(env_name, sampler, max_steps=75, render_mode=render)
 config = model_configs[env_name]
-model_store = ModelStore(env_name, exp, seed, None)
+model_store = ModelStore(env_name, exp, seed)
 model_store.load_vocab()
 training_status = model_store.load_training_status(map_location='cpu')
 model = build_model(env, training_status, config)

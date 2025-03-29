@@ -55,7 +55,7 @@ def aux(status):
 
 def main():
     start_time = time.time()
-    model_store = ModelStore(env_name, exp, seed, None)
+    model_store = ModelStore(env_name, exp, seed)
     statuses = model_store.load_eval_training_statuses(map_location=device)
     model_store.load_vocab()
 
