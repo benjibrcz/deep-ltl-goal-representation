@@ -1,0 +1,61 @@
+method,task,seed,accepting_visits
+DeepLTL,GF blue & GF green,1.0,4.982
+DeepLTL,GF blue & GF green,2.0,4.328
+DeepLTL,GF blue & GF green,3.0,3.368
+DeepLTL,GF blue & GF green,4.0,4.344
+DeepLTL,GF blue & GF green,5.0,3.8
+DeepLTL,GF blue & GF green & GF yellow & G !magenta,1.0,1.782
+DeepLTL,GF blue & GF green & GF yellow & G !magenta,2.0,1.41
+DeepLTL,GF blue & GF green & GF yellow & G !magenta,3.0,1.546
+DeepLTL,GF blue & GF green & GF yellow & G !magenta,4.0,1.832
+DeepLTL,GF blue & GF green & GF yellow & G !magenta,5.0,1.994
+DeepLTL,FG blue,1.0,724.46
+DeepLTL,FG blue,2.0,694.666
+DeepLTL,FG blue,3.0,440.62
+DeepLTL,FG blue,4.0,501.35
+DeepLTL,FG blue,5.0,452.962
+DeepLTL,FG blue & F (yellow & F green),1.0,433.712
+DeepLTL,FG blue & F (yellow & F green),2.0,382.75
+DeepLTL,FG blue & F (yellow & F green),3.0,303.872
+DeepLTL,FG blue & F (yellow & F green),4.0,263.722
+DeepLTL,FG blue & F (yellow & F green),5.0,300.016
+GCRL-LTL,GF blue & GF green,1.0,3.228
+GCRL-LTL,GF blue & GF green,2.0,3.136
+GCRL-LTL,GF blue & GF green,3.0,3.376
+GCRL-LTL,GF blue & GF green,4.0,3.042
+GCRL-LTL,GF blue & GF green,5.0,2.898
+GCRL-LTL,GF blue & GF green & GF yellow & G !magenta,1.0,1.344
+GCRL-LTL,GF blue & GF green & GF yellow & G !magenta,2.0,1.336
+GCRL-LTL,GF blue & GF green & GF yellow & G !magenta,3.0,1.292
+GCRL-LTL,GF blue & GF green & GF yellow & G !magenta,4.0,1.336
+GCRL-LTL,GF blue & GF green & GF yellow & G !magenta,5.0,1.234
+GCRL-LTL,FG blue,1.0,337.334
+GCRL-LTL,FG blue,2.0,260.348
+GCRL-LTL,FG blue,3.0,380.798
+GCRL-LTL,FG blue,4.0,193.792
+GCRL-LTL,FG blue,5.0,155.372
+GCRL-LTL,FG blue & F (yellow & F green),1.0,206.75
+GCRL-LTL,FG blue & F (yellow & F green),2.0,158.792
+GCRL-LTL,FG blue & F (yellow & F green),3.0,269.99
+GCRL-LTL,FG blue & F (yellow & F green),4.0,150.648
+GCRL-LTL,FG blue & F (yellow & F green),5.0,104.436
+DeepLTL,FG magenta & G !yellow,5.0,395.172
+DeepLTL,FG magenta & G !yellow,3.0,533.8
+DeepLTL,FG magenta & G !yellow,4.0,662.658
+DeepLTL,FG magenta & G !yellow,2.0,656.69
+DeepLTL,FG magenta & G !yellow,1.0,691.568
+DeepLTL,G ((green | yellow) => F blue) & FG (green | magenta),5.0,364.646
+DeepLTL,G ((green | yellow) => F blue) & FG (green | magenta),3.0,488.336
+DeepLTL,G ((green | yellow) => F blue) & FG (green | magenta),4.0,683.416
+DeepLTL,G ((green | yellow) => F blue) & FG (green | magenta),2.0,666.69
+DeepLTL,G ((green | yellow) => F blue) & FG (green | magenta),1.0,648.772
+GCRL-LTL,FG magenta & G !yellow,1,424.662
+GCRL-LTL,FG magenta & G !yellow,2,319.394
+GCRL-LTL,FG magenta & G !yellow,3,452.786
+GCRL-LTL,FG magenta & G !yellow,4,339.396
+GCRL-LTL,FG magenta & G !yellow,5,496.336
+GCRL-LTL,G ((green | yellow) => F blue) & FG (green | magenta),1,422.622
+GCRL-LTL,G ((green | yellow) => F blue) & FG (green | magenta),2,273.794
+GCRL-LTL,G ((green | yellow) => F blue) & FG (green | magenta),3,420.98
+GCRL-LTL,G ((green | yellow) => F blue) & FG (green | magenta),4,309.938
+GCRL-LTL,G ((green | yellow) => F blue) & FG (green | magenta),5,475.096

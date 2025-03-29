@@ -1,0 +1,21 @@
+method,task,seed,accepting_visits
+DeepLTL,GF a & GF b & GF c & GF d & G (!e & !f),1,2.334
+DeepLTL,GF a & GF b & GF c & GF d & G (!e & !f),2,3.284
+DeepLTL,GF a & GF b & GF c & GF d & G (!e & !f),3,2.83
+DeepLTL,GF a & GF b & GF c & GF d & G (!e & !f),4,3.522
+DeepLTL,GF a & GF b & GF c & GF d & G (!e & !f),5,3.298
+DeepLTL,GF (e & (!a U f)),1,17.598
+DeepLTL,GF (e & (!a U f)),2,18.37
+DeepLTL,GF (e & (!a U f)),3,16.776
+DeepLTL,GF (e & (!a U f)),4,18.066
+DeepLTL,GF (e & (!a U f)),5,18.386
+GCRL-LTL,GF a & GF b & GF c & GF d & G (!e & !f),1,1.724
+GCRL-LTL,GF a & GF b & GF c & GF d & G (!e & !f),2,1.3
+GCRL-LTL,GF a & GF b & GF c & GF d & G (!e & !f),3,1.796
+GCRL-LTL,GF a & GF b & GF c & GF d & G (!e & !f),4,1.59
+GCRL-LTL,GF a & GF b & GF c & GF d & G (!e & !f),5,1.064
+GCRL-LTL,GF (e & (!a U f)),1,9.608
+GCRL-LTL,GF (e & (!a U f)),2,5.536
+GCRL-LTL,GF (e & (!a U f)),3,5.256
+GCRL-LTL,GF (e & (!a U f)),4,5.336
+GCRL-LTL,GF (e & (!a U f)),5,7.964

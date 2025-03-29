@@ -1,0 +1,76 @@
+method,task,seed,success_rate,mean_steps
+DeepLTL,F ((red & magenta) & F ((blue & green) & F yellow)),5,1.0,76.99
+DeepLTL,F ((red & magenta) & F ((blue & green) & F yellow)),1,1.0,77.382
+DeepLTL,F ((red & magenta) & F ((blue & green) & F yellow)),2,1.0,81.978
+DeepLTL,F ((red & magenta) & F ((blue & green) & F yellow)),4,1.0,82.38
+DeepLTL,F ((red & magenta) & F ((blue & green) & F yellow)),3,1.0,79.704
+DeepLTL,F (orange & (!red U magenta)),5,0.996,47.8433734939759
+DeepLTL,F (orange & (!red U magenta)),1,0.998,53.68537074148296
+DeepLTL,F (orange & (!red U magenta)),4,1.0,56.35
+DeepLTL,F (orange & (!red U magenta)),2,1.0,53.3
+DeepLTL,F (orange & (!red U magenta)),3,1.0,52.922
+DeepLTL,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),2,0.98,68.60816326530612
+DeepLTL,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),4,0.98,71.29387755102042
+DeepLTL,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),1,0.99,70.62828282828283
+DeepLTL,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),5,0.982,71.87983706720978
+DeepLTL,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),3,0.956,76.39121338912133
+DeepLTL,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),3,0.87,45.66896551724138
+DeepLTL,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),1,0.866,41.697459584295615
+DeepLTL,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),5,0.864,43.5162037037037
+DeepLTL,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),2,0.858,44.02097902097902
+DeepLTL,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),4,0.84,44.44047619047619
+DeepLTL,(blue => F magenta) U (yellow | ((green & blue) & F orange)),5,1.0,32.458
+DeepLTL,(blue => F magenta) U (yellow | ((green & blue) & F orange)),3,1.0,31.266
+DeepLTL,(blue => F magenta) U (yellow | ((green & blue) & F orange)),1,1.0,37.638
+DeepLTL,(blue => F magenta) U (yellow | ((green & blue) & F orange)),4,1.0,39.786
+DeepLTL,(blue => F magenta) U (yellow | ((green & blue) & F orange)),2,0.982,44.073319755600814
+LTL2Action,F ((red & magenta) & F ((blue & green) & F yellow)),1,1.0,83.028
+LTL2Action,F ((red & magenta) & F ((blue & green) & F yellow)),2,1.0,83.614
+LTL2Action,F ((red & magenta) & F ((blue & green) & F yellow)),3,1.0,85.466
+LTL2Action,F ((red & magenta) & F ((blue & green) & F yellow)),4,0.998,83.44488977955912
+LTL2Action,F ((red & magenta) & F ((blue & green) & F yellow)),5,0.996,81.06425702811245
+LTL2Action,F (orange & (!red U magenta)),1,0.996,57.56827309236948
+LTL2Action,F (orange & (!red U magenta)),2,0.974,135.7618069815195
+LTL2Action,F (orange & (!red U magenta)),3,0.146,101.3972602739726
+LTL2Action,F (orange & (!red U magenta)),4,0.024,50.0
+LTL2Action,F (orange & (!red U magenta)),5,1.0,127.414
+LTL2Action,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),1,0.922,86.8351409978308
+LTL2Action,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),2,0.92,100.74347826086957
+LTL2Action,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),3,0.002,67.0
+LTL2Action,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),4,0.906,82.98454746136865
+LTL2Action,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),5,0.82,143.24146341463415
+LTL2Action,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),1,0.058,31.310344827586206
+LTL2Action,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),2,0.106,31.18867924528302
+LTL2Action,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),3,0.074,31.16216216216216
+LTL2Action,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),4,0.074,33.486486486486484
+LTL2Action,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),5,0.054,34.7037037037037
+LTL2Action,(blue => F magenta) U (yellow | ((green & blue) & F orange)),1,0.998,72.33667334669339
+LTL2Action,(blue => F magenta) U (yellow | ((green & blue) & F orange)),2,0.358,46.46927374301676
+LTL2Action,(blue => F magenta) U (yellow | ((green & blue) & F orange)),3,0.096,7.375
+LTL2Action,(blue => F magenta) U (yellow | ((green & blue) & F orange)),4,0.77,89.3012987012987
+LTL2Action,(blue => F magenta) U (yellow | ((green & blue) & F orange)),5,0.59,28.789830508474576
+GCRL-LTL,F ((red & magenta) & F ((blue & green) & F yellow)),1,1.0,83.952
+GCRL-LTL,F ((red & magenta) & F ((blue & green) & F yellow)),2,1.0,82.454
+GCRL-LTL,F ((red & magenta) & F ((blue & green) & F yellow)),3,1.0,79.688
+GCRL-LTL,F ((red & magenta) & F ((blue & green) & F yellow)),4,0.09,62.37777777777778
+GCRL-LTL,F ((red & magenta) & F ((blue & green) & F yellow)),5,1.0,82.576
+GCRL-LTL,F (orange & (!red U magenta)),1,0.0,
+GCRL-LTL,F (orange & (!red U magenta)),2,0.0,
+GCRL-LTL,F (orange & (!red U magenta)),3,0.0,
+GCRL-LTL,F (orange & (!red U magenta)),4,0.0,
+GCRL-LTL,F (orange & (!red U magenta)),5,0.0,
+GCRL-LTL,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),1,0.874,74.84439359267735
+GCRL-LTL,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),2,0.876,74.28082191780823
+GCRL-LTL,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),3,0.952,72.3781512605042
+GCRL-LTL,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),4,0.0,
+GCRL-LTL,(!red U (green & blue & aqua)) & F (orange & (F (red & magenta))),5,0.926,76.90712742980561
+GCRL-LTL,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),1,0.684,41.119883040935676
+GCRL-LTL,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),2,0.752,39.898936170212764
+GCRL-LTL,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),3,0.718,41.81058495821727
+GCRL-LTL,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),4,0.756,43.11904761904762
+GCRL-LTL,(((!yellow & !orange) U (green & blue)) & (!green U magenta)),5,0.716,40.54189944134078
+GCRL-LTL,(blue => F magenta) U (yellow | ((green & blue) & F orange)),1,0.716,19.06983240223464
+GCRL-LTL,(blue => F magenta) U (yellow | ((green & blue) & F orange)),2,0.694,18.89913544668588
+GCRL-LTL,(blue => F magenta) U (yellow | ((green & blue) & F orange)),3,0.538,15.553903345724907
+GCRL-LTL,(blue => F magenta) U (yellow | ((green & blue) & F orange)),4,0.662,18.809667673716014
+GCRL-LTL,(blue => F magenta) U (yellow | ((green & blue) & F orange)),5,0.568,16.485915492957748

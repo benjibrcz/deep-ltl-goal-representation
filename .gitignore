@@ -1,0 +1,14 @@
+spot-2.9/
+owl-21.0/
+**/__pycache__
+.idea
+wandb
+experiments
+.pytest_cache
+trajectories.pdf
+cache
+/eval_results/
+multiple_results/
+*.fish
+paper_utils
+ldba.png

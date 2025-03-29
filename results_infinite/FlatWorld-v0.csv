@@ -1,0 +1,25 @@
+method,task,seed,accepting_visits
+DeepLTL,GF (blue & green) & GF (red & magenta),1,12.48
+DeepLTL,GF (blue & green) & GF (red & magenta),2,11.764
+DeepLTL,GF (blue & green) & GF (red & magenta),3,10.882
+DeepLTL,GF (blue & green) & GF (red & magenta),4,12.876
+DeepLTL,GF (blue & green) & GF (red & magenta),5,12.584
+DeepLTL,GF red & GF yellow & GF orange & G !blue,1,10.99
+DeepLTL,GF red & GF yellow & GF orange & G !blue,2,11.166
+DeepLTL,GF red & GF yellow & GF orange & G !blue,4,9.312
+DeepLTL,GF red & GF yellow & GF orange & G !blue,5,12.29
+DeepLTL,GF (aqua & blue) & GF red & GF yellow & G !green,4,5.246
+DeepLTL,GF (aqua & blue) & GF red & GF yellow & G !green,2,7.362
+DeepLTL,GF (aqua & blue) & GF red & GF yellow & G !green,1,7.3
+DeepLTL,GF (aqua & blue) & GF red & GF yellow & G !green,3,7.212
+DeepLTL,GF (aqua & blue) & GF red & GF yellow & G !green,5,7.8
+GCRL-LTL,GF (blue && green) && GF (red && magenta),1,8.032
+GCRL-LTL,GF (blue && green) && GF (red && magenta),2,9.156
+GCRL-LTL,GF (blue && green) && GF (red && magenta),3,9.928
+GCRL-LTL,GF (blue && green) && GF (red && magenta),4,0.0
+GCRL-LTL,GF (blue && green) && GF (red && magenta),5,8.896
+GCRL-LTL,GF (aqua && blue) && GF red && GF yellow && G !green,1,4.848
+GCRL-LTL,GF (aqua && blue) && GF red && GF yellow && G !green,2,4.582
+GCRL-LTL,GF (aqua && blue) && GF red && GF yellow && G !green,3,4.254
+GCRL-LTL,GF (aqua && blue) && GF red && GF yellow && G !green,4,4.68
+GCRL-LTL,GF (aqua && blue) && GF red && GF yellow && G !green,5,4.848

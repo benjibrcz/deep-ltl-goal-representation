@@ -1,0 +1,179 @@
+method,task,seed,success_rate,mean_steps
+DeepLTL,F (green & (!blue U yellow)) & F magenta,1,0.98,301.930612244898
+DeepLTL,F (green & (!blue U yellow)) & F magenta,2,0.9,295.16
+DeepLTL,F (green & (!blue U yellow)) & F magenta,3,0.954,301.1719077568134
+DeepLTL,F (green & (!blue U yellow)) & F magenta,4,0.838,283.2004773269689
+DeepLTL,F (green & (!blue U yellow)) & F magenta,5,0.936,335.4508547008547
+DeepLTL,(F blue) & (!blue U (green & F yellow)),1,0.944,293.510593220339
+DeepLTL,(F blue) & (!blue U (green & F yellow)),2,0.892,301.3161434977578
+DeepLTL,(F blue) & (!blue U (green & F yellow)),3,0.934,301.0642398286938
+DeepLTL,(F blue) & (!blue U (green & F yellow)),4,0.884,289.5633484162896
+DeepLTL,(F blue) & (!blue U (green & F yellow)),5,0.906,314.317880794702
+DeepLTL,F (blue | green) & F yellow & F magenta,1,0.968,253.8801652892562
+DeepLTL,F (blue | green) & F yellow & F magenta,2,0.898,252.6815144766147
+DeepLTL,F (blue | green) & F yellow & F magenta,3,0.992,273.02620967741933
+DeepLTL,F (blue | green) & F yellow & F magenta,4,0.962,259.5738045738046
+DeepLTL,F (blue | green) & F yellow & F magenta,5,0.992,259.57862903225805
+DeepLTL,!(magenta | yellow) U (blue & F green),1,0.902,186.7960088691796
+DeepLTL,!(magenta | yellow) U (blue & F green),2,0.866,196.72517321016167
+DeepLTL,!(magenta | yellow) U (blue & F green),3,0.884,226.158371040724
+DeepLTL,!(magenta | yellow) U (blue & F green),4,0.926,198.1598272138229
+DeepLTL,!(magenta | yellow) U (blue & F green),5,0.926,208.94600431965443
+DeepLTL,!green U ((blue | magenta) & (!green U yellow)),1,0.932,178.71244635193133
+DeepLTL,!green U ((blue | magenta) & (!green U yellow)),2,0.906,191.09271523178808
+DeepLTL,!green U ((blue | magenta) & (!green U yellow)),3,0.934,196.7280513918629
+DeepLTL,!green U ((blue | magenta) & (!green U yellow)),4,0.904,173.18805309734512
+DeepLTL,!green U ((blue | magenta) & (!green U yellow)),5,0.886,195.93227990970647
+DeepLTL,((green | blue) => (!yellow U magenta)) U yellow,1,0.978,112.14723926380368
+DeepLTL,((green | blue) => (!yellow U magenta)) U yellow,2,0.98,102.45102040816326
+DeepLTL,((green | blue) => (!yellow U magenta)) U yellow,3,0.988,111.10323886639677
+DeepLTL,((green | blue) => (!yellow U magenta)) U yellow,4,0.968,94.00619834710744
+DeepLTL,((green | blue) => (!yellow U magenta)) U yellow,5,0.976,111.3360655737705
+LTL2Action,F (green & (!blue U yellow)) & F magenta,1,0.61,438.3934426
+LTL2Action,F (green & (!blue U yellow)) & F magenta,2,0.68,416.6735294
+LTL2Action,F (green & (!blue U yellow)) & F magenta,3,0.584,437.0753425
+LTL2Action,F (green & (!blue U yellow)) & F magenta,4,0.82,402.5682927
+LTL2Action,F (green & (!blue U yellow)) & F magenta,5,0.282,425.6241135
+GCRL-LTL,F (green & (!blue U yellow)) & F magenta,1,0.834,465.2781775
+GCRL-LTL,F (green & (!blue U yellow)) & F magenta,2,0.878,432.3439636
+GCRL-LTL,F (green & (!blue U yellow)) & F magenta,3,0.86,443.7395349
+GCRL-LTL,F (green & (!blue U yellow)) & F magenta,4,0.872,449.2958716
+GCRL-LTL,F (green & (!blue U yellow)) & F magenta,5,0.816,470.2720588
+GCRL-LTL,(F blue) & (!blue U (green & F yellow)),1,0.772,451.3419689
+GCRL-LTL,(F blue) & (!blue U (green & F yellow)),2,0.91,451.4461538
+GCRL-LTL,(F blue) & (!blue U (green & F yellow)),3,0.87,453.2413793
+GCRL-LTL,(F blue) & (!blue U (green & F yellow)),4,0.856,443.2523364
+GCRL-LTL,(F blue) & (!blue U (green & F yellow)),5,0.826,456.6029056
+LTL2Action,(F blue) & (!blue U (green & F yellow)),1,0.462,431.8787879
+LTL2Action,(F blue) & (!blue U (green & F yellow)),2,0.098,368.6326531
+LTL2Action,(F blue) & (!blue U (green & F yellow)),3,0.064,511.21875
+LTL2Action,(F blue) & (!blue U (green & F yellow)),4,0.038,339.8421053
+LTL2Action,(F blue) & (!blue U (green & F yellow)),5,0.05,432.32
+GCRL-LTL,F (blue | green) & F yellow & F magenta,1,0.85,471.1176471
+GCRL-LTL,F (blue | green) & F yellow & F magenta,2,0.928,428.2284483
+GCRL-LTL,F (blue | green) & F yellow & F magenta,3,0.92,448.623913
+GCRL-LTL,F (blue | green) & F yellow & F magenta,4,0.912,440.0153509
+GCRL-LTL,F (blue | green) & F yellow & F magenta,5,0.848,460.4976415
+LTL2Action,F (blue | green) & F yellow & F magenta,1,0.864,387.9467593
+LTL2Action,F (blue | green) & F yellow & F magenta,2,0.268,388.4328358
+LTL2Action,F (blue | green) & F yellow & F magenta,3,0.924,337.8441558
+LTL2Action,F (blue | green) & F yellow & F magenta,4,0.672,439.264881
+LTL2Action,F (blue | green) & F yellow & F magenta,5,0.608,518.9342105
+GCRL-LTL,!(magenta | yellow) U (blue & F green),1,0.83,295.260241
+GCRL-LTL,!(magenta | yellow) U (blue & F green),2,0.88,311.3295455
+GCRL-LTL,!(magenta | yellow) U (blue & F green),3,0.882,301.3038549
+GCRL-LTL,!(magenta | yellow) U (blue & F green),4,0.888,304.9954955
+GCRL-LTL,!(magenta | yellow) U (blue & F green),5,0.882,302.7460317
+LTL2Action,!(magenta | yellow) U (blue & F green),1,0.718,403.6072423
+LTL2Action,!(magenta | yellow) U (blue & F green),2,0.3,316.46
+LTL2Action,!(magenta | yellow) U (blue & F green),3,0.774,312.0155039
+LTL2Action,!(magenta | yellow) U (blue & F green),4,0.814,326.1400491
+LTL2Action,!(magenta | yellow) U (blue & F green),5,0.842,299.5106888
+GCRL-LTL,!green U ((blue | magenta) & (!green U yellow)),1,0.828,317.5845411
+GCRL-LTL,!green U ((blue | magenta) & (!green U yellow)),2,0.88,273.4568182
+GCRL-LTL,!green U ((blue | magenta) & (!green U yellow)),3,0.836,277.2129187
+GCRL-LTL,!green U ((blue | magenta) & (!green U yellow)),4,0.87,292.4597701
+GCRL-LTL,!green U ((blue | magenta) & (!green U yellow)),5,0.842,292.9168646
+LTL2Action,!green U ((blue | magenta) & (!green U yellow)),1,0.856,251.1051402
+LTL2Action,!green U ((blue | magenta) & (!green U yellow)),2,0.486,254.0493827
+LTL2Action,!green U ((blue | magenta) & (!green U yellow)),3,0.874,236.4050343
+LTL2Action,!green U ((blue | magenta) & (!green U yellow)),4,0.602,374.179402
+LTL2Action,!green U ((blue | magenta) & (!green U yellow)),5,0.48,350.35
+GCRL-LTL,((green | blue) => (!yellow U magenta)) U yellow,1,0.888,144.5382883
+GCRL-LTL,((green | blue) => (!yellow U magenta)) U yellow,2,0.91,125.1846154
+GCRL-LTL,((green | blue) => (!yellow U magenta)) U yellow,3,0.898,138.3719376
+GCRL-LTL,((green | blue) => (!yellow U magenta)) U yellow,4,0.898,133.766147
+GCRL-LTL,((green | blue) => (!yellow U magenta)) U yellow,5,0.878,145.2255125
+LTL2Action,((green | blue) => (!yellow U magenta)) U yellow,1,0.812,117.3374384
+LTL2Action,((green | blue) => (!yellow U magenta)) U yellow,2,0.978,118.4805726
+LTL2Action,((green | blue) => (!yellow U magenta)) U yellow,3,0.918,122.6514161
+LTL2Action,((green | blue) => (!yellow U magenta)) U yellow,4,0.978,135.601227
+LTL2Action,((green | blue) => (!yellow U magenta)) U yellow,5,0.962,125.3742204
+DeepLTL,RA,2,0.906,249.23620309050773
+DeepLTL,RA,1,0.934,255.61884368308355
+DeepLTL,RA,4,0.91,257.2021978021978
+DeepLTL,RA,5,0.958,278.7348643006263
+DeepLTL,RA,3,0.952,269.04411764705884
+DeepLTL,fixedparity,4,0.974,195.2525667351129
+DeepLTL,fixedparity,2,0.9,223.10444444444445
+DeepLTL,fixedparity,3,0.98,216.34897959183672
+DeepLTL,fixedparity,1,0.972,201.164609053498
+DeepLTL,fixedparity,5,0.972,219.46090534979425
+RAD,RA,1,0.868,391.6774193548387
+RAD,RA,2,0.976,357.3606557377049
+RAD,RA,3,0.92,421.6108695652174
+RAD,RA,4,0.9,388.81111111111113
+RAD,RA,5,0.904,446.1504424778761
+RADd,RA,1,0.866,321.6166281755196
+RADd,RA,2,0.956,306.092050209205
+RADd,RA,3,0.676,348.4970414201184
+RADd,RA,4,0.872,338.6032110091743
+RADd,RA,5,0.858,390.35664335664336
+RADd,F (green & (!blue U yellow)) & F magenta,1,0.838,384.4200477326969
+RADd,F (green & (!blue U yellow)) & F magenta,2,0.97,374.3979381443299
+RADd,F (green & (!blue U yellow)) & F magenta,3,0.908,381.1057268722467
+RADd,F (green & (!blue U yellow)) & F magenta,4,0.866,459.52655889145495
+RADd,F (green & (!blue U yellow)) & F magenta,5,0.922,443.4967462039045
+RAD,F (green & (!blue U yellow)) & F magenta,1,0.962,445.07068607068607
+RAD,F (green & (!blue U yellow)) & F magenta,2,0.992,408.8225806451613
+RAD,F (green & (!blue U yellow)) & F magenta,3,0.99,426.8666666666667
+RAD,F (green & (!blue U yellow)) & F magenta,4,0.862,534.4083526682134
+RAD,F (green & (!blue U yellow)) & F magenta,5,0.892,533.4192825112108
+RAD,(F blue) & (!blue U (green & F yellow)),1,0.926,457.90928725701946
+RAD,(F blue) & (!blue U (green & F yellow)),2,0.96,387.5520833333333
+RAD,(F blue) & (!blue U (green & F yellow)),3,0.858,546.1771561771561
+RAD,(F blue) & (!blue U (green & F yellow)),4,0.814,458.5110565110565
+RAD,(F blue) & (!blue U (green & F yellow)),5,0.846,521.5721040189126
+RAD,F (blue | green) & F yellow & F magenta,1,0.97,381.24123711340206
+RAD,F (blue | green) & F yellow & F magenta,2,0.994,331.23943661971833
+RAD,F (blue | green) & F yellow & F magenta,3,0.998,353.6673346693387
+RAD,F (blue | green) & F yellow & F magenta,4,0.862,504.5290023201856
+RAD,F (blue | green) & F yellow & F magenta,5,0.982,426.2199592668025
+RAD,!(magenta | yellow) U (blue & F green),1,0.926,292.0107991360691
+RAD,!(magenta | yellow) U (blue & F green),2,0.94,253.3531914893617
+RAD,!(magenta | yellow) U (blue & F green),3,0.906,303.47240618101546
+RAD,!(magenta | yellow) U (blue & F green),4,0.898,316.37416481069044
+RAD,!(magenta | yellow) U (blue & F green),5,0.916,359.2008733624454
+RAD,((green | blue) => (!yellow U magenta)) U yellow,1,0.99,149.24242424242425
+RAD,((green | blue) => (!yellow U magenta)) U yellow,2,0.996,133.39156626506025
+RAD,((green | blue) => (!yellow U magenta)) U yellow,3,0.986,140.84584178498986
+RAD,((green | blue) => (!yellow U magenta)) U yellow,4,0.986,138.80933062880325
+RAD,((green | blue) => (!yellow U magenta)) U yellow,5,0.978,182.7893660531697
+RAD,!green U ((blue | magenta) & (!green U yellow)),1,0.73,377.6054794520548
+RAD,!green U ((blue | magenta) & (!green U yellow)),2,0.968,246.6095041322314
+RAD,!green U ((blue | magenta) & (!green U yellow)),3,0.908,314.22026431718064
+RAD,!green U ((blue | magenta) & (!green U yellow)),4,0.95,277.4610526315789
+RAD,!green U ((blue | magenta) & (!green U yellow)),5,0.776,468.61340206185565
+RAD,fixedparity,1,0.988,273.63967611336034
+RAD,fixedparity,2,0.998,264.32665330661325
+RAD,fixedparity,3,0.97,288.56907216494847
+RAD,fixedparity,4,0.968,334.3347107438017
+RAD,fixedparity,5,0.98,300.1938775510204
+DeepLTL,(green => F (yellow & (F (magenta & (F blue))))) U ((blue & F magenta) & (!yellow U green)),1,0.93,304.6967741935484
+DeepLTL,(green => F (yellow & (F (magenta & (F blue))))) U ((blue & F magenta) & (!yellow U green)),2,0.93,312.3720430107527
+DeepLTL,(green => F (yellow & (F (magenta & (F blue))))) U ((blue & F magenta) & (!yellow U green)),4,0.934,306.6852248394004
+DeepLTL,(green => F (yellow & (F (magenta & (F blue))))) U ((blue & F magenta) & (!yellow U green)),5,0.974,325.2772073921971
+DeepLTL,(green => F (yellow & (F (magenta & (F blue))))) U ((blue & F magenta) & (!yellow U green)),3,0.948,362.86708860759495
+RAD,(green => F (yellow & (F (magenta & (F blue))))) U ((blue & F magenta) & (!yellow U green)),1,0.36,525.6388888888889
+RAD,(green => F (yellow & (F (magenta & (F blue))))) U ((blue & F magenta) & (!yellow U green)),2,0.894,451.1923937360179
+RAD,(green => F (yellow & (F (magenta & (F blue))))) U ((blue & F magenta) & (!yellow U green)),3,0.886,447.8081264108352
+RAD,(green => F (yellow & (F (magenta & (F blue))))) U ((blue & F magenta) & (!yellow U green)),4,0.852,492.774647887324
+RAD,(green => F (yellow & (F (magenta & (F blue))))) U ((blue & F magenta) & (!yellow U green)),5,0.284,533.7042253521126
+Transformer,F (green & (!blue U yellow)) & F magenta,3,0.838,405.472553699284
+Transformer,F (green & (!blue U yellow)) & F magenta,2,0.822,471.11678832116786
+Transformer,F (green & (!blue U yellow)) & F magenta,1,0.68,509.49411764705883
+Transformer,(F blue) & (!blue U (green & F yellow)),3,0.428,412.9299065420561
+Transformer,(F blue) & (!blue U (green & F yellow)),1,0.464,414.6681034482759
+Transformer,(F blue) & (!blue U (green & F yellow)),2,0.502,487.1314741035857
+Transformer,F (blue | green) & F yellow & F magenta,1,0.94,303.55744680851063
+Transformer,F (blue | green) & F yellow & F magenta,2,0.952,361.43697478991595
+Transformer,F (blue | green) & F yellow & F magenta,3,0.9,407.03777777777776
+Transformer,!(magenta | yellow) U (blue & F green),1,0.722,244.13296398891967
+Transformer,!(magenta | yellow) U (blue & F green),3,0.752,273.9840425531915
+Transformer,!(magenta | yellow) U (blue & F green),2,0.74,307.2189189189189
+Transformer,!green U ((blue | magenta) & (!green U yellow)),3,0.862,239.95127610208817
+Transformer,!green U ((blue | magenta) & (!green U yellow)),2,0.914,247.43763676148797
+Transformer,!green U ((blue | magenta) & (!green U yellow)),1,0.63,294.33968253968254
+Transformer,((green | blue) => (!yellow U magenta)) U yellow,3,0.936,121.51923076923077
+Transformer,((green | blue) => (!yellow U magenta)) U yellow,2,0.954,129.27044025157232
+Transformer,((green | blue) => (!yellow U magenta)) U yellow,1,0.822,161.60097323600974

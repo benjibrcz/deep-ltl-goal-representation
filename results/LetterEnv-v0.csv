@@ -1,0 +1,76 @@
+method,task,seed,success_rate,mean_steps
+DeepLTL,F (a & (!b U c)) & F d,1,0.998,9.929859719438877
+DeepLTL,F (a & (!b U c)) & F d,2,1.0,9.894
+DeepLTL,F (a & (!b U c)) & F d,3,0.996,9.255020080321286
+DeepLTL,F (a & (!b U c)) & F d,4,1.0,9.3
+DeepLTL,F (a & (!b U c)) & F d,5,1.0,9.91
+DeepLTL,(F d) & (!f U (d & F b)),1,0.984,7.4471544715447155
+DeepLTL,(F d) & (!f U (d & F b)),2,0.98,7.214285714285714
+DeepLTL,(F d) & (!f U (d & F b)),3,0.978,7.361963190184049
+DeepLTL,(F d) & (!f U (d & F b)),4,0.984,7.58130081300813
+DeepLTL,(F d) & (!f U (d & F b)),5,0.982,6.678207739307536
+DeepLTL,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,1,1.0,12.104
+DeepLTL,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,2,0.998,12.841683366733466
+DeepLTL,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,3,1.0,12.718
+DeepLTL,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,4,1.0,12.072
+DeepLTL,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,5,1.0,11.408
+DeepLTL,!a U (b & (!c U (d & (!e U f)))),1,0.96,11.660416666666666
+DeepLTL,!a U (b & (!c U (d & (!e U f)))),2,0.978,12.548057259713701
+DeepLTL,!a U (b & (!c U (d & (!e U f)))),3,0.976,12.385245901639344
+DeepLTL,!a U (b & (!c U (d & (!e U f)))),4,0.97,12.70103092783505
+DeepLTL,!a U (b & (!c U (d & (!e U f)))),5,0.96,11.372916666666667
+DeepLTL,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),1,0.994,9.261569416498993
+DeepLTL,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),2,0.994,10.826961770623743
+DeepLTL,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),3,0.998,8.98196392785571
+DeepLTL,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),4,1.0,9.42
+DeepLTL,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),5,1.0,8.904
+GCRL-LTL,F (a & (!b U c)) & F d,1,0.858,14.668997668997669
+GCRL-LTL,F (a & (!b U c)) & F d,2,0.948,15.691983122362869
+GCRL-LTL,F (a & (!b U c)) & F d,3,0.972,15.94238683127572
+GCRL-LTL,F (a & (!b U c)) & F d,4,0.952,14.413865546218487
+GCRL-LTL,F (a & (!b U c)) & F d,5,0.954,15.742138364779874
+GCRL-LTL,(F d) & (!f U (d & F b)),1,0.944,8.411016949152541
+GCRL-LTL,(F d) & (!f U (d & F b)),2,0.926,10.771058315334773
+GCRL-LTL,(F d) & (!f U (d & F b)),3,0.962,10.83160083160083
+GCRL-LTL,(F d) & (!f U (d & F b)),4,0.952,8.665966386554622
+GCRL-LTL,(F d) & (!f U (d & F b)),5,0.892,10.17713004484305
+GCRL-LTL,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,1,0.994,18.830985915492956
+GCRL-LTL,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,2,1.0,21.572
+GCRL-LTL,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,3,1.0,22.296
+GCRL-LTL,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,4,0.998,20.857715430861724
+GCRL-LTL,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,5,0.998,20.06813627254509
+GCRL-LTL,!a U (b & (!c U (d & (!e U f)))),1,0.852,12.450704225352112
+GCRL-LTL,!a U (b & (!c U (d & (!e U f)))),2,0.752,15.90691489361702
+GCRL-LTL,!a U (b & (!c U (d & (!e U f)))),3,0.906,16.445916114790286
+GCRL-LTL,!a U (b & (!c U (d & (!e U f)))),4,0.82,14.573170731707316
+GCRL-LTL,!a U (b & (!c U (d & (!e U f)))),5,0.748,13.644385026737968
+GCRL-LTL,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),1,0.99,24.78181818181818
+GCRL-LTL,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),2,1.0,26.092
+GCRL-LTL,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),3,1.0,25.51
+GCRL-LTL,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),4,1.0,25.642
+GCRL-LTL,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),5,0.998,26.12625250501002
+LTL2Action,F (a & (!b U c)) & F d,1,0.81,27.664197530864197
+LTL2Action,F (a & (!b U c)) & F d,2,0.716,28.268156424581004
+LTL2Action,F (a & (!b U c)) & F d,3,0.91,26.53846153846154
+LTL2Action,F (a & (!b U c)) & F d,4,0.87,30.24367816091954
+LTL2Action,F (a & (!b U c)) & F d,5,0.466,34.682403433476395
+LTL2Action,(F d) & (!f U (d & F b)),1,0.86,8.923255813953489
+LTL2Action,(F d) & (!f U (d & F b)),2,0.91,15.362637362637363
+LTL2Action,(F d) & (!f U (d & F b)),3,0.804,21.950248756218905
+LTL2Action,(F d) & (!f U (d & F b)),4,0.65,25.141538461538463
+LTL2Action,(F d) & (!f U (d & F b)),5,0.748,23.842245989304814
+LTL2Action,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,1,0.456,40.10526315789474
+LTL2Action,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,2,0.604,38.12582781456954
+LTL2Action,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,3,0.392,42.076530612244895
+LTL2Action,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,4,0.34,37.088235294117645
+LTL2Action,(F ((a | c | j) & F b)) & (F (c & F d)) & F k,5,0.24,44.175
+LTL2Action,!a U (b & (!c U (d & (!e U f)))),1,0.87,22.880459770114943
+LTL2Action,!a U (b & (!c U (d & (!e U f)))),2,0.462,30.952380952380953
+LTL2Action,!a U (b & (!c U (d & (!e U f)))),3,0.666,32.58258258258258
+LTL2Action,!a U (b & (!c U (d & (!e U f)))),4,0.724,32.466850828729285
+LTL2Action,!a U (b & (!c U (d & (!e U f)))),5,0.854,25.283372365339577
+LTL2Action,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),1,0.51,39.1843137254902
+LTL2Action,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),2,0.256,37.046875
+LTL2Action,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),3,0.43,32.48372093023256
+LTL2Action,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),4,0.838,16.30071599045346
+LTL2Action,((a | b | c | d) => F (e & (F (f & F g)))) U (h & F i),5,0.172,34.19767441860465
