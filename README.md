@@ -60,3 +60,14 @@ This project is licensed under the [MIT License](LICENSE). We use the following 
 - [torch_ac](https://github.com/lcswillems/torch-ac) (MIT License)
 
 We thank the authors of [LTL2Action](https://github.com/LTL2Action/LTL2Action) for providing a starting point for our implementation.
+
+## Citation
+If you find this code useful in your research, please consider citing our paper:
+```bibtex
+@inproceedings{deepltl,
+    title     = {Deep{LTL}: Learning to Efficiently Satisfy Complex {LTL} Specifications for Multi-Task {RL}},
+    author    = {Mathias Jackermeier and Alessandro Abate},
+    booktitle = {International Conference on Learning Representations ({ICLR})},
+    year      = {2025}
+}
+```
