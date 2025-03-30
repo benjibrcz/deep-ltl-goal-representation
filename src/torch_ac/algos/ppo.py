@@ -116,7 +116,7 @@ class PPO(BaseAlgo):
                     p.grad.data.norm(2).item() ** 2 for p in self.model.parameters() if p.requires_grad and p.grad is not None) ** 0.5
                 torch.nn.utils.clip_grad_norm_([p for p in self.model.parameters() if p.requires_grad and p.grad is not None],
                                                self.max_grad_norm)
-                self.optimizer.step()  # TODO: multiply by probability of choosing continuous action or discrete. update step() in seq_wrapper
+                self.optimizer.step()
 
                 if any(torch.isnan(p).any() for p in self.model.parameters()):
                     print("Model parameters are NaN")

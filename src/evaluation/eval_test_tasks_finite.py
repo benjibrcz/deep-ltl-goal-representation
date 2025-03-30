@@ -1,7 +1,9 @@
 import argparse
 import os
+import time
 
 import pandas as pd
+from colorama import Fore
 from tqdm import tqdm
 
 from evaluation.simulate import simulate
@@ -70,4 +72,7 @@ if __name__ == '__main__':
     parser.add_argument('--exp', type=str, default='deepset_complex')
     parser.add_argument('--deterministic', action=argparse.BooleanOptionalAction, default=False)
     args = parser.parse_args()
+    if args.deterministic and args.env != 'PointLtl2-v0':
+        print(f'{Fore.RED}NOTE: we only recommend using the --deterministic flag for PointLtl2-v0{Fore.RESET}')
+        time.sleep(2)
     main(args.env, args.exp, args.deterministic)

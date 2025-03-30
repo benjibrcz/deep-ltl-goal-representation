@@ -43,7 +43,7 @@ def main(env, exp):
     with mp.Pool(num_procs) as pool:
         for task in tasks:
             print(f'Running task: {task}')
-            # deterministic = task.startswith('GF')  # TODO
+            # deterministic = task.startswith('GF')  # TODO: we evaluate deterministic policies for some tasks
             deterministic = False
             args = [[env, gamma, exp, seed, num_episodes, task, False, False, deterministic] for seed in seeds]
             for result in tqdm(pool.imap_unordered(eval_task, args), total=len(seeds)):

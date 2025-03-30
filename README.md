@@ -48,6 +48,9 @@ We provide several evaluation scripts in `src/evaluation`. To simulate a trained
 ```bash
 PYTHONPATH=src/ python src/evaluation/simulate.py --env PointLtl2-v0 --exp test --seed 1 --formula '(!blue U green) & F yellow' --finite --deterministic
 ```
+
+Note that we generally evaluate the deterministic policy in _ZoneEnv_ (by taking the mean of the predicted action distribution), whereas we evaluate stochastic policies in _LetterWorld_ and _FlatWorld_.
+
 The script also supports a `--render` flag to visualise the simulation in real time. Alternatively, we provide the scripts `draw_zone_trajectories.py` and `draw_flat_trajectories.py` to visualise the trajectories of the agents in the _ZoneEnv_ and _FlatWorld_ environments, respectively.
 
 For a more comprehensive evaluation, we provide the scripts `eval_test_tasks_finite.py` and `eval_test_tasks_infinite.py` to evaluate the performance of a model on a set of test tasks. The former evaluates the model on a set of finite-horizon tasks, while the latter evaluates the model on a set of infinite-horizon tasks. The default tasks specified in the scripts match the tasks from our evaluation in Table 1.
