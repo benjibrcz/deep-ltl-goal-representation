@@ -41,6 +41,24 @@ Our investigation into the internal representations of a reinforcement learning 
 
 **Key Insight**: The model represents spatial information **egocentrically** (relative to the agent) rather than **allocentrically** (in world coordinates).
 
+#### Visual Evidence: The Compass Phenomenon
+
+The following visualizations demonstrate the egocentric nature of the model's spatial representation:
+
+![Compass Phenomenon - Anchored Predictions](compass_phenomenon_anchored_static)
+
+*Static snapshots showing how predicted goal locations (dashed circles) move with the agent's position. When predictions fall outside the visible grid, they are anchored to the boundary while preserving the relative direction from the agent.*
+
+![Compass Phenomenon - Dynamic Animation](compass_phenomenon_anchored.gif)
+
+*Animated visualization showing the dynamic "compass" behavior. The predicted goal locations (dashed circles) continuously update to point from the agent's current position toward the true goal locations (solid circles), revealing the egocentric nature of the model's spatial representation.*
+
+**Key Observations from Visualizations:**
+- **True zones** (solid circles) remain fixed in world coordinates
+- **Predicted zones** (dashed circles) move dynamically with the agent
+- When predictions fall outside the grid, they are anchored to the boundary while preserving the relative direction
+- The model's internal representation acts like a "compass" that always points toward goals relative to the agent's current position
+
 ## Technical Details
 
 ### Environment Observations
