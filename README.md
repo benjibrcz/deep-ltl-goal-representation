@@ -57,6 +57,49 @@ For a more comprehensive evaluation, we provide the scripts `eval_test_tasks_fin
 
 Finally, we provide the script `eval_over_time.py` which evaluates the performance of a model over training on a fixed dataset of specifications sampled from the _reach/avoid_ task space. To plot the resulting training curves, run `plot_training_curves.py`.
 
+## Steering Analysis Experiments
+
+This repository includes comprehensive experiments on steering neural network representations to understand how goal information is encoded and whether it can be manipulated. The experiments explore three key network components:
+
+### Goal Probing
+We trained linear probes to predict the agent's current goal from hidden states of different network components:
+- **LTL Network**: 94.0% accuracy in predicting next goals
+- **Environment Network**: 98.1% accuracy (highest)
+- **Policy Network**: 99.5% accuracy (highest)
+
+### Steering Experiments
+We attempted to steer the agent's behavior by manipulating hidden states during rollouts:
+- **LTL Network Steering**: 0.8 goal changes per 100 interventions
+- **Environment Network Steering**: 1.2 goal changes per 100 interventions
+- **Policy Network Steering**: 1.2 goal changes per 100 interventions
+
+### Key Findings
+Despite high probe accuracies (94-99.5%), steering effectiveness remains low across all networks (0.8-1.2% success rate). This suggests that goal representations are distributed across multiple network components and are robust against single-layer manipulations.
+
+### Running the Experiments
+```bash
+# Run goal probing
+python run_probe_goal.py
+
+# Run LTL network steering
+python run_steer_goals.py
+
+# Run environment network steering  
+python run_env_steering.py
+
+# Run policy network steering
+python run_policy_steering.py
+
+# Generate comprehensive analysis
+python run_comprehensive_analysis.py
+```
+
+### Reports and Visualizations
+- `PROBE_GOAL_REPORT.md`: Detailed analysis of goal probing results
+- `STEERING_EXPERIMENT_REPORT.md`: Analysis of LTL and environment network steering
+- `COMPREHENSIVE_STEERING_REPORT.md`: Complete comparison of all steering approaches
+- Various PNG files showing trajectories, probe accuracies, and steering effectiveness
+
 ## License
 This project is licensed under the [MIT License](LICENSE). We use the following third-party libraries:
 - [Safety-Gymnasium](https://github.com/PKU-Alignment/safety-gymnasium) (Apache License 2.0)
