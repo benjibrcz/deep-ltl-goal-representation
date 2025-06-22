@@ -34,7 +34,7 @@ def set_env():
 
 env_name = 'PointLtl2-v0'
 config = model_configs[env_name]
-exp = 'deepset'
+exp = 'tiny_test'
 seed = int(sys.argv[2])
 deterministic = True
 gamma = 0.998

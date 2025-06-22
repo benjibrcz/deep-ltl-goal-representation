@@ -2,6 +2,7 @@ import random
 
 import numpy as np
 import torch
+from preprocessing.preprocessing import preprocess_obss
 from tqdm import tqdm
 
 from envs import make_env
@@ -18,9 +19,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--env', type=str, choices=['PointLtl2-v0', 'LetterEnv-v0', 'FlatWorld-v0'], default='PointLtl2-v0')
     parser.add_argument('--exp', type=str, default='deepset')
-    parser.add_argument('--seed', type=int, default=1)
-    parser.add_argument('--num_episodes', type=int, default=500)
-    parser.add_argument('--formula', type=str, default='(F blue) & (!blue U (green & F yellow))')
+    parser.add_argument('--seed', type=int, default=0)
+    parser.add_argument('--num_episodes', type=int, default=10)
+    parser.add_argument('--formula', type=str, default='GF blue & GF green')
     parser.add_argument('--finite', action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument('--render', action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument('--deterministic', action=argparse.BooleanOptionalAction, default=True)
@@ -60,6 +61,7 @@ def simulate(env, gamma, exp, seed, num_episodes, formula, finite, render, deter
         pbar = tqdm(pbar)
     for i in pbar:
         obs, info = env.reset(), {}
+
         if render:
             print(obs['goal'])
         agent.reset()

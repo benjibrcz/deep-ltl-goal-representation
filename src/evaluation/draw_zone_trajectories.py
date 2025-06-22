@@ -15,14 +15,14 @@ from utils.model_store import ModelStore
 from visualize.zones import draw_trajectories
 
 env_name = 'PointLtl2-v0'
-exp = 'deepset'
-seed = 1
+exp = 'big_test'
+seed = 0
 
 random.seed(seed)
 np.random.seed(seed)
 torch.random.manual_seed(seed)
 
-sampler = FixedSampler.partial('GF blue & GF yellow')
+sampler = FixedSampler.partial('GF blue & GF green')
 deterministic = True
 
 env = make_env(env_name, sampler, render_mode=None, max_steps=1000)
@@ -36,7 +36,7 @@ props = set(env.get_propositions())
 search = ExhaustiveSearch(model, props, num_loops=2)
 agent = Agent(model, search=search, propositions=props, verbose=False)
 
-num_episodes = 4
+num_episodes = 5
 
 trajectories = []
 zone_poss = []

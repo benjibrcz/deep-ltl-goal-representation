@@ -8,7 +8,7 @@ def run_rabinizer(formula: str) -> str:
     # -p: parallel processing
     # -d: construct a non-generalised Buechi automaton
     # -e: keep generated epsilon transitions
-    command = [RABINIZER_PATH, '-i', formula, '-p', '-d', '-e']
+    command = [RABINIZER_PATH, '-i', formula, '-p']
     run = subprocess.run(command, capture_output=True, text=True)
     if run.stderr != '':
         raise RuntimeError(f'Rabinizer call `{" ".join(command)}` resulted in an error.\nError: {run.stderr}.')

@@ -19,7 +19,11 @@ def preprocess_obss(obss: list[dict[str, Any]], propositions: set[str], device=N
         features.append(obs["features"])
         seqs.append(list(reversed(obs["goal"])))
     for seq, obs in zip(seqs, obss):
-        epsilon_enabled = seq[-1][0] == LDBASequence.EPSILON
+        seq = obs.get('seq', [])
+        if seq and len(seq) > 0:
+            epsilon_enabled = seq[-1][0] == LDBASequence.EPSILON
+        else:
+            epsilon_enabled = False
         if epsilon_enabled and len(seq) > 1:
             next_avoid = seq[-2][1]
             assignment = Assignment({p: (p in obs['propositions']) for p in propositions}).to_frozen()
