@@ -189,6 +189,19 @@ def decode_true_layout(env):
     order = sorted(range(len(zs)), key=lambda j: keys[j])
     return np.array([zs[j] for j in order]), [cs[j] for j in order]
 
+def get_current_goal(agent, step):
+    """Get the current goal the agent is pursuing at a given step"""
+    if hasattr(agent, 'sequence') and agent.sequence and len(agent.sequence) > 0:
+        goal_set = agent.sequence[0][0]
+        if len(goal_set) == 1:
+            assignment = next(iter(goal_set))
+            true_props = {p for p, v in assignment.assignment if v}
+            if len(true_props) == 1:
+                prop = next(iter(true_props))
+                if prop in CMAP:
+                    return CMAP[prop]
+    return None
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--formula',     type=str, default="GF blue & GF green")
@@ -247,7 +260,7 @@ def main():
     agent = Agent(model, ExhaustiveSearch(model, props, num_loops=2),
                   propositions=props, verbose=False)
 
-    feats, traj = [], []
+    feats, traj, goals = [], [], []
     module = dict(model.named_modules())[args.layer]
     def grab(m, inp, out):
         x = out[1] if isinstance(out, tuple) else out
@@ -256,6 +269,7 @@ def main():
 
     agent.reset()
     traj.append(env.agent_pos[:2].copy())
+    goals.append(get_current_goal(agent, 0))
     done=False
     max_steps = 1000  # Ensure a long rollout
     for step in range(max_steps):
@@ -271,6 +285,7 @@ def main():
 
         obs, _, done, _ = env.step(a)
         traj.append(env.agent_pos[:2].copy())
+        goals.append(get_current_goal(agent, step + 1))
 
         # Stop if we have enough data for snapshots and the agent is done
         if done and step > max(args.snaps, default=0):
@@ -281,6 +296,7 @@ def main():
 
     feats = np.stack(feats)
     traj  = np.stack(traj)
+    goals = np.array(goals)
 
     # ── figure: snapshots ────────────────────────────────────────────────────────
     snaps = [s for s in args.snaps if args.warmup <= s < len(feats)]
@@ -292,7 +308,7 @@ def main():
 
     n = len(snaps)
     fig, axes = plt.subplots(1, n, figsize=(4*n, 4.5), squeeze=False)
-    fig.suptitle(f"Formula: {formula} - Anchored Predictions", fontsize=16)
+    fig.suptitle(f"Formula: {formula} - Anchored Predictions with Goal-Colored Trajectory", fontsize=16)
 
     selected_colors = [c for i,c in enumerate(true_zcol) if COLOR_NAMES[c] in args.show_colors]
     
@@ -337,8 +353,20 @@ def main():
                 ax.plot([agent_pos[0], anchored_x], [agent_pos[1], anchored_y], 
                        ':', color=CMAP_RGB[pred_c_idx], linewidth=1, alpha=0.7)
 
+        # Draw trajectory colored by current goal
         seg = traj[:s+1]
-        ax.plot(seg[:,0], seg[:,1], "-o", color="k", markersize=2, linewidth=2)
+        seg_goals = goals[:s+1]
+        
+        # Plot trajectory segments colored by goal
+        for j in range(len(seg) - 1):
+            goal = seg_goals[j]
+            if goal is not None and goal < len(CMAP_RGB):
+                color = CMAP_RGB[goal]
+            else:
+                color = 'gray'  # Default color if no goal or unknown goal
+            
+            ax.plot(seg[j:j+2, 0], seg[j:j+2, 1], "-o", color=color, 
+                   markersize=2, linewidth=2, alpha=0.8)
 
     handles = [patches.Patch(facecolor=CMAP_RGB[v],
                              edgecolor='k',
@@ -395,9 +423,19 @@ def main():
             t = i * args.gif_dt
             if t >= len(feats): return [traj_line] + pred_patches + direction_lines
             
-            # Update trajectory
+            # Update trajectory with goal coloring
             seg = traj[:t+1]
+            seg_goals = goals[:t+1]
+            
+            # Find the current goal for trajectory color
+            current_goal = seg_goals[-1] if len(seg_goals) > 0 else None
+            if current_goal is not None and current_goal < len(CMAP_RGB):
+                traj_color = CMAP_RGB[current_goal]
+            else:
+                traj_color = 'gray'
+            
             traj_line.set_data(seg[:,0], seg[:,1])
+            traj_line.set_color(traj_color)
             
             # Update predictions
             x = feats[t:t+1]

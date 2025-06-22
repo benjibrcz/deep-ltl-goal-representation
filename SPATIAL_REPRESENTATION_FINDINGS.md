@@ -49,15 +49,25 @@ The following visualizations demonstrate the egocentric nature of the model's sp
 
 *Static snapshots showing how predicted goal locations (dashed circles) move with the agent's position. When predictions fall outside the visible grid, they are anchored to the boundary while preserving the relative direction from the agent.*
 
+![Compass Phenomenon - Goal-Colored Trajectory](compass_phenomenon_goal_colored_static)
+
+*Enhanced visualization showing the agent's trajectory colored by its current goal. The trajectory color indicates which goal the agent is pursuing at each moment, making it easier to see how the agent tracks the corresponding predicted zone (dashed circle of the same color).*
+
 ![Compass Phenomenon - Dynamic Animation](compass_phenomenon_anchored.gif)
 
 *Animated visualization showing the dynamic "compass" behavior. The predicted goal locations (dashed circles) continuously update to point from the agent's current position toward the true goal locations (solid circles), revealing the egocentric nature of the model's spatial representation.*
 
+![Compass Phenomenon - Goal-Colored Animation](compass_phenomenon_goal_colored.gif)
+
+*Animated visualization with goal-colored trajectory. The agent's path is colored according to its current goal, clearly showing how it tracks the corresponding predicted zone as both move dynamically through the environment.*
+
 **Key Observations from Visualizations:**
 - **True zones** (solid circles) remain fixed in world coordinates
 - **Predicted zones** (dashed circles) move dynamically with the agent
+- **Agent trajectory** is colored by the current goal being pursued
 - When predictions fall outside the grid, they are anchored to the boundary while preserving the relative direction
 - The model's internal representation acts like a "compass" that always points toward goals relative to the agent's current position
+- The goal-colored trajectory makes it clear that the agent is tracking the predicted zone of the same color, demonstrating the egocentric nature of its spatial reasoning
 
 ## Technical Details
 
