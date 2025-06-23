@@ -18,15 +18,15 @@ import seaborn as sns
 
 sns.set_theme(style='whitegrid')
 
-env_name = 'FlatWorld-v0'
-exp = 'deepset_complex'
-seed = 1
+env_name = 'PointLtl2-v0'
+exp = 'big_test'
+seed = 0
 
 random.seed(seed)
 np.random.seed(seed)
 torch.random.manual_seed(seed)
 
-sampler = FixedSampler.partial('F (red & magenta) & F (blue & green)')  # FG blue & GF green & GF aqua
+sampler = FixedSampler.partial('GF blue & GF green')
 deterministic = False
 
 env = make_env(env_name, sampler, render_mode=None)

@@ -1,0 +1,102 @@
+=== Subgoal Steering Trajectory Visualization ===
+Environment: PointLtl2-v0
+Experiment: big_test
+Formula: GF blue & GF green
+
+Observation shape: (80,)
+Num LTLNet params: 7536
+Training probe for steering...
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [ 1.08768413 -1.45559439], Zone center: [0.1 0. ], Dist: 1.7590551340499936, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.88290672  2.17362469], Zone center: [0.7 0.7], Dist: 2.1626750620115898, Radius: 0.5
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.54437751 12.49210629], Zone center: [0.1 0. ], Dist: 12.508714640335196, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.59328951 -2.86499105], Zone center: [0.7 0.7], Dist: 3.792328959610373, Radius: 0.5
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.29030027 12.24265039], Zone center: [0.1 0. ], Dist: 12.248870266105088, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.33914501  1.77858071], Zone center: [0.7 0.7], Dist: 1.4977178339520492, Radius: 0.5
+Collected 500 valid samples for probe training
+Probe accuracy: 0.878
+
+--- Running unsteered rollouts (steering_strength=0.0) ---
+Running steered rollout with strength 0.0...
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.87476549 -7.0696676 ], Zone center: [0.1 0. ], Dist: 7.13655152704145, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.31044061 -1.70544368], Zone center: [0.7 0.7], Dist: 2.609051457506602, Radius: 0.5
+Running steered rollout with strength 0.0...
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [0.52654347 6.83700823], Zone center: [0.1 0. ], Dist: 6.850300791124743, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.95116202 -4.4305096 ], Zone center: [0.7 0.7], Dist: 5.389662770076394, Radius: 0.5
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.56566176 -0.36007458], Zone center: [0.1 0. ], Dist: 0.7568086183219194, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.51045703 -4.92262762], Zone center: [0.7 0.7], Dist: 5.751447433651267, Radius: 0.5
+Running steered rollout with strength 0.0...
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-1.19445065  1.24413995], Zone center: [0.1 0. ], Dist: 1.7954071136910257, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.20406958 -1.22284681], Zone center: [0.7 0.7], Dist: 2.1247780247852273, Radius: 0.5
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.14582959 -0.77751799], Zone center: [0.1 0. ], Dist: 0.8154547288389014, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.04104362 -1.36293506], Zone center: [0.7 0.7], Dist: 2.1919960545599833, Radius: 0.5
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-3.68249358 -1.87386134], Zone center: [0.1 0. ], Dist: 4.221210012087338, Radius: 0.8
+Running steered rollout with strength 0.0...
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.24622061 -0.45523826], Zone center: [0.1 0. ], Dist: 0.5719358163798496, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.41803438 -4.12063345], Zone center: [0.7 0.7], Dist: 4.948586437597708, Radius: 0.5
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-1.02845375 -0.62944808], Zone center: [0.1 0. ], Dist: 1.2921349644023157, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.04152905  5.6015166 ], Zone center: [0.7 0.7], Dist: 4.957290624942899, Radius: 0.5
+Running steered rollout with strength 0.0...
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [ 0.00661245 -0.52943372], Zone center: [0.1 0. ], Dist: 0.5376070095652608, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [ 0.06963998 -0.56508703], Zone center: [0.7 0.7], Dist: 1.4134351583416298, Radius: 0.5
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.43372721  3.50147014], Zone center: [0.1 0. ], Dist: 3.541914441244323, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.51927163 -1.46594592], Zone center: [0.7 0.7], Dist: 2.485547232344929, Radius: 0.5
+Saved plot to trajectories_unsteered.png
+
+Goal satisfaction events for unsteered rollouts:
+  Episode 0:
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.87476549 -7.0696676 ], Zone center: [0.1 0. ], Dist: 7.13655152704145, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.31044061 -1.70544368], Zone center: [0.7 0.7], Dist: 2.609051457506602, Radius: 0.5
+  Episode 1:
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [0.52654347 6.83700823], Zone center: [0.1 0. ], Dist: 6.850300791124743, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.95116202 -4.4305096 ], Zone center: [0.7 0.7], Dist: 5.389662770076394, Radius: 0.5
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.56566176 -0.36007458], Zone center: [0.1 0. ], Dist: 0.7568086183219194, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.51045703 -4.92262762], Zone center: [0.7 0.7], Dist: 5.751447433651267, Radius: 0.5
+  Episode 2:
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-1.19445065  1.24413995], Zone center: [0.1 0. ], Dist: 1.7954071136910257, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.20406958 -1.22284681], Zone center: [0.7 0.7], Dist: 2.1247780247852273, Radius: 0.5
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.14582959 -0.77751799], Zone center: [0.1 0. ], Dist: 0.8154547288389014, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.04104362 -1.36293506], Zone center: [0.7 0.7], Dist: 2.1919960545599833, Radius: 0.5
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-3.68249358 -1.87386134], Zone center: [0.1 0. ], Dist: 4.221210012087338, Radius: 0.8
+  Episode 3:
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.24622061 -0.45523826], Zone center: [0.1 0. ], Dist: 0.5719358163798496, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.41803438 -4.12063345], Zone center: [0.7 0.7], Dist: 4.948586437597708, Radius: 0.5
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-1.02845375 -0.62944808], Zone center: [0.1 0. ], Dist: 1.2921349644023157, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.04152905  5.6015166 ], Zone center: [0.7 0.7], Dist: 4.957290624942899, Radius: 0.5
+  Episode 4:
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [ 0.00661245 -0.52943372], Zone center: [0.1 0. ], Dist: 0.5376070095652608, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [ 0.06963998 -0.56508703], Zone center: [0.7 0.7], Dist: 1.4134351583416298, Radius: 0.5
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.43372721  3.50147014], Zone center: [0.1 0. ], Dist: 3.541914441244323, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.51927163 -1.46594592], Zone center: [0.7 0.7], Dist: 2.485547232344929, Radius: 0.5
+
+--- Running steered rollouts (steering_strength=1.0) ---
+Running steered rollout with strength 1.0...
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.65285763  2.79569479], Zone center: [0.1 0. ], Dist: 2.895289962473195, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.57483329 -1.69298458], Zone center: [0.7 0.7], Dist: 2.711378820214462, Radius: 0.5
+Running steered rollout with strength 1.0...
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.94848079  3.35910284], Zone center: [0.1 0. ], Dist: 3.518932200733685, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.23428349 -1.24874889], Zone center: [0.7 0.7], Dist: 2.161135784093763, Radius: 0.5
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.52200249 -1.42186408], Zone center: [0.1 0. ], Dist: 1.5519615157772204, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.52838388 -1.48069153], Zone center: [0.7 0.7], Dist: 2.502866857233224, Radius: 0.5
+Running steered rollout with strength 1.0...
+Running steered rollout with strength 1.0...
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.42948892 -9.65749387], Zone center: [0.1 0. ], Dist: 9.671998050919726, Radius: 0.8
+Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.45176126 -2.71722836], Zone center: [0.7 0.7], Dist: 3.6061064436952477, Radius: 0.5
+Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [ 0.80923156 -1.90582377], Zone center: [0.1 0. ], Dist: 2.033512636272484, Radius: 0.8
+Running steered rollout with strength 1.0...
+Saved plot to trajectories_steered.png
+
+Goal satisfaction events for steered rollouts:
+  Episode 0:
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.65285763  2.79569479], Zone center: [0.1 0. ], Dist: 2.895289962473195, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.57483329 -1.69298458], Zone center: [0.7 0.7], Dist: 2.711378820214462, Radius: 0.5
+  Episode 1:
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.94848079  3.35910284], Zone center: [0.1 0. ], Dist: 3.518932200733685, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.23428349 -1.24874889], Zone center: [0.7 0.7], Dist: 2.161135784093763, Radius: 0.5
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.52200249 -1.42186408], Zone center: [0.1 0. ], Dist: 1.5519615157772204, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.52838388 -1.48069153], Zone center: [0.7 0.7], Dist: 2.502866857233224, Radius: 0.5
+  Episode 2:
+  Episode 3:
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [-0.42948892 -9.65749387], Zone center: [0.1 0. ], Dist: 9.671998050919726, Radius: 0.8
+    Goal satisfied, advancing sequence! Subgoal: green, Agent pos: [-0.45176126 -2.71722836], Zone center: [0.7 0.7], Dist: 3.6061064436952477, Radius: 0.5
+    Goal satisfied, advancing sequence! Subgoal: blue, Agent pos: [ 0.80923156 -1.90582377], Zone center: [0.1 0. ], Dist: 2.033512636272484, Radius: 0.8
+  Episode 4:

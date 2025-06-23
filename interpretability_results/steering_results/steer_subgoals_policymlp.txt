@@ -1,0 +1,8 @@
+=== Subgoal Steering Trajectory Visualization ===
+Environment: PointLtl2-v0
+Experiment: big_test
+Formula: GF blue & GF green
+
+Observation shape: (80,)
+Num LTLNet params: 7536
+Training probe for steering...

@@ -34,7 +34,26 @@ class Agent:
                             break
             
             if goal_satisfied:
-                print("Goal satisfied, advancing sequence!")
+                # Debug info
+                prop_name = None
+                zone_center = None
+                zone_radius = None
+                if isinstance(current_goal_assignment_set, (set, frozenset)):
+                    for frozen_assignment in current_goal_assignment_set:
+                        if hasattr(frozen_assignment, 'assignment'):
+                            current_goal_props = {prop for prop, val in frozen_assignment.assignment if val}
+                            if len(current_goal_props) == 1:
+                                prop_name = next(iter(current_goal_props))
+                                # Find zone info
+                                from envs.flatworld import FlatWorld
+                                for c in FlatWorld.CIRCLES:
+                                    if c.color == prop_name:
+                                        zone_center = c.center
+                                        zone_radius = c.radius
+                                        break
+                agent_pos = obs['features'][:2] if 'features' in obs else None
+                dist = np.linalg.norm(agent_pos - zone_center) if agent_pos is not None and zone_center is not None else None
+                print(f"Goal satisfied, advancing sequence! Subgoal: {prop_name}, Agent pos: {agent_pos}, Zone center: {zone_center}, Dist: {dist}, Radius: {zone_radius}")
                 self.sequence = self.sequence[1:]
 
         if 'ldba_state_changed' in info or self.sequence is None or len(self.sequence) == 0:
