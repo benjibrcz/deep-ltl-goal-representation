@@ -1,0 +1,35 @@
+Comprehensive Environment Network Probe Summary
+==================================================
+
+Target Feature: agent_pos
+Layer: env_net.mlp.2
+Timestamp: 20250723_141956
+
+Results by Split Type:
+-------------------------
+
+TEMPORAL SPLIT:
+  R² (test): 0.2315
+  MSE (test): 0.7838
+  Train samples: 1500
+  Test samples: 1500
+  PCA components: 15
+
+SPATIAL SPLIT:
+  R² (test): -0.9468
+  MSE (test): 1.3038
+  Train samples: 1500
+  Test samples: 1500
+  PCA components: 15
+
+ENVIRONMENTAL SPLIT:
+  R² (test): -0.0660
+  MSE (test): 1.3309
+  Train samples: 1500
+  Test samples: 1500
+  PCA components: 14
+
+Generalization Performance:
+-------------------------
+Temporal-Environmental Gap: 0.2975
+Best performing split: temporal (R² = 0.2315)

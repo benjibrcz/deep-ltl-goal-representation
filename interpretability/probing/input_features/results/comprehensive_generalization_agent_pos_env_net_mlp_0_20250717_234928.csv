@@ -1,0 +1,3 @@
+timestamp,split_type,target_feature,layer,r2_train,r2_test,mse_train,mse_test,n_train_samples,n_test_samples,feature_dim,target_dim
+20250717_234928,test_same_rollout,agent_pos,env_net.mlp.0,0.9971454773975019,0.24950166747427643,0.0031737363809815704,0.4829061132016509,500,500,128,2
+20250717_234928,test_same_world,agent_pos,env_net.mlp.0,0.9941457238738152,-3.2778664060489344,0.003176279950545748,1.2997488641040584,400,600,128,2

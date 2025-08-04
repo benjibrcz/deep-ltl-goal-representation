@@ -1,0 +1,30 @@
+Comprehensive Generalization Analysis
+=====================================
+Timestamp: 20250722_201001
+Layer: env_net.mlp.0
+Target Feature: wall_lidar
+Number of Rollouts per World: 3
+Max Steps per Rollout: 50
+Total Rollouts Collected: 12
+Total Worlds Used: 4
+
+Split Statistics:
+--------------------------------------------------
+test_same_rollout:  300 train,  300 test samples
+test_same_world:  200 train,  400 test samples
+test_different_world:  300 train,  300 test samples
+
+Generalization Test Performance:
+--------------------------------------------------
+test_same_rollout   : R²=0.739, MSE=0.0056 (train=300, test=300)
+test_same_world     : R²=-1.054, MSE=0.0276 (train=200, test=400)
+test_different_world: R²=-0.330, MSE=0.0221 (train=300, test=300)
+
+Best generalization:  test_same_rollout (R²=0.739)
+Worst generalization: test_same_world (R²=-1.054)
+
+Generalization Gaps (R² differences):
+--------------------------------------------------
+Same Rollout → Same World Gap:     +1.793
+Same World → Different World Gap:  -0.724
+Same Rollout → Different World Gap: +1.069

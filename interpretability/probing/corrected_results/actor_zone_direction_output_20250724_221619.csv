@@ -1,0 +1,4 @@
+timestamp,probe_type,goals,split_type,r2_test,mse_test,n_train,n_test,input_dims,pca_dims
+20250724_221619,actor_zone_direction_output,FG blue,temporal,0.011223855882221745,0.45185027553818524,500,500,2,2
+20250724_221619,actor_zone_direction_output,FG blue,spatial,-1.1373018894887275,0.6644085577448727,480,520,2,2
+20250724_221619,actor_zone_direction_output,FG blue,environmental,-0.2608921623781071,0.5853426205522914,400,600,2,2

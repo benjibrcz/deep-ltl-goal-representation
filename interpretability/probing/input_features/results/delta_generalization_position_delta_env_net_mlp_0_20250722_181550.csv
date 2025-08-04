@@ -1,0 +1,4 @@
+timestamp,split_type,target_feature,layer,prediction_type,r2_train,r2_test,mse_train,mse_test,n_train_samples,n_test_samples,feature_dim,target_dim
+20250722_181550,test_different_world,position_delta,env_net.mlp.0,movement_delta,0.4094824778254615,-0.039792784567491635,7.360172792606041e-05,0.00012883552297910213,9950,9950,128,2
+20250722_181550,test_same_rollout,position_delta,env_net.mlp.0,movement_delta,0.30394682773288856,0.10749717409672549,0.00010676733041890086,8.691242667385822e-05,9900,10000,128,2
+20250722_181550,test_same_world,position_delta,env_net.mlp.0,movement_delta,0.4231585844478008,-0.0904105572122651,7.25156454284586e-05,0.0001342923802562244,9950,9950,128,2

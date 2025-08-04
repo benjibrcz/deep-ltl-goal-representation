@@ -53,7 +53,7 @@ class Agent:
                                         break
                 agent_pos = obs['features'][:2] if 'features' in obs else None
                 dist = np.linalg.norm(agent_pos - zone_center) if agent_pos is not None and zone_center is not None else None
-                print(f"Goal satisfied, advancing sequence! Subgoal: {prop_name}, Agent pos: {agent_pos}, Zone center: {zone_center}, Dist: {dist}, Radius: {zone_radius}")
+                # print(f"Goal satisfied, advancing sequence! Subgoal: {prop_name}, Agent pos: {agent_pos}, Zone center: {zone_center}, Dist: {dist}, Radius: {zone_radius}")
                 self.sequence = self.sequence[1:]
 
         if 'ldba_state_changed' in info or self.sequence is None or len(self.sequence) == 0:

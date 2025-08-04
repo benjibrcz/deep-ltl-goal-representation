@@ -1,0 +1,4 @@
+timestamp,split_type,target_feature,layer,prediction_type,r2_train,r2_test,mse_train,mse_test,n_train_samples,n_test_samples,feature_dim,target_dim
+20250722_181824,test_different_world,zone_lidar_delta,env_net.mlp.0,movement_delta,0.03215710435449754,0.0002708447813613152,0.0015402666349894636,0.0011880089788945413,9948,9950,128,16
+20250722_181824,test_same_rollout,zone_lidar_delta,env_net.mlp.0,movement_delta,0.06617406263874298,-0.027499886353057515,0.0007668196819408763,0.00197577715706032,9899,9999,128,16
+20250722_181824,test_same_world,zone_lidar_delta,env_net.mlp.0,movement_delta,0.03406669181384022,0.010550661653716854,0.00099345510305437,0.0017319903820467413,9948,9950,128,16

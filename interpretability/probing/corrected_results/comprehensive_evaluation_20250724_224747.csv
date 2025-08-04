@@ -1,0 +1,7 @@
+task,split_type,metric,value,n_train,n_test,status
+next_action,cross_rollout,r2,0.19880557333125576,1600,1600,success
+next_action,temporal,r2,0.03834588973358388,1600,1600,success
+next_action,cross_goal,r2,0.0,0,0,insufficient_goals
+navigation_success_3steps,cross_rollout,balanced_accuracy,0.5,1597,1600,error: The 'zero_division' parameter 
+navigation_success_5steps,cross_rollout,balanced_accuracy,0.5,1595,1600,error: The 'zero_division' parameter 
+navigation_success_10steps,cross_rollout,balanced_accuracy,0.5,1600,1590,error: The 'zero_division' parameter 

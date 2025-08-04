@@ -1,0 +1,5 @@
+method,k_steps,goal,n_samples,distance_r2,mean_distance
+combined_embeddings,1,FG blue,12721,-0.48814468633761043,0.014608923360754634
+combined_embeddings,1,FG green,12644,-0.8686998544005531,0.016189666916710026
+combined_embeddings,1,FG yellow,12542,-0.39199271505287103,0.015196796749937565
+combined_embeddings,1,FG magenta,12617,-0.8357947639490184,0.015248102810559216

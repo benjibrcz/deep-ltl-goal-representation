@@ -1,0 +1,4 @@
+timestamp,split_type,target_feature,layer,r2_train,r2_test,mse_train,mse_test,n_train,n_test,n_components
+20250723_142007,temporal,zone_lidar,env_net.mlp.2,1.0,1.0,0.0,0.0,1500,1500,15
+20250723_142007,spatial,zone_lidar,env_net.mlp.2,1.0,1.0,0.0,0.0,1500,1500,14
+20250723_142007,environmental,zone_lidar,env_net.mlp.2,1.0,1.0,0.0,0.0,1500,1500,14

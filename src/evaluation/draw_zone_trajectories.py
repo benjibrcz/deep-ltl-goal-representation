@@ -22,7 +22,7 @@ random.seed(seed)
 np.random.seed(seed)
 torch.random.manual_seed(seed)
 
-sampler = FixedSampler.partial('GF blue & GF green')
+sampler = FixedSampler.partial('FG green')
 deterministic = True
 
 env = make_env(env_name, sampler, render_mode=None, max_steps=1000)

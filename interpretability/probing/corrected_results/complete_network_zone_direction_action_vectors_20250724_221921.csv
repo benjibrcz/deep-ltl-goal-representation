@@ -1,0 +1,4 @@
+timestamp,probe_type,goals,split_type,r2_test,mse_test,n_train,n_test,input_dims,pca_dims
+20250724_221921,complete_network_action_vectors,FG blue,temporal,0.0022397699511978453,0.4776362610833156,800,800,2,2
+20250724_221921,complete_network_action_vectors,FG blue,spatial,-0.14328721666857558,0.561171543431183,800,800,2,2
+20250724_221921,complete_network_action_vectors,FG blue,environmental,-0.09245784019329717,0.5177858278310301,800,800,2,2

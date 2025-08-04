@@ -1,0 +1,2 @@
+timestamp,probe_type,split_method,split_type,target_feature,r2_train,r2_test,mse_train,mse_test,n_train,n_test,n_components,original_dims
+20250725_134521,output,temporal,temporal,zone_distances,0.44833962610815586,0.3389580473339433,0.509968356743002,0.6520401520473512,5000,5000,22,64

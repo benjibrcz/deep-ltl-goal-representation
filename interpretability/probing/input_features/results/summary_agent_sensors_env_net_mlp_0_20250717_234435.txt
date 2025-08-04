@@ -1,0 +1,21 @@
+Comprehensive Generalization Analysis
+=====================================
+Timestamp: 20250717_234435
+Layer: env_net.mlp.0
+Target Feature: agent_sensors
+Number of Rollouts per World: 3
+Max Steps per Rollout: 50
+Total Rollouts Collected: 23
+Total Worlds Used: 10
+
+Split Statistics:
+--------------------------------------------------
+test_same_rollout:  550 train,  550 test samples
+test_same_world:  450 train,  650 test samples
+test_different_world:  400 train,  700 test samples
+
+Generalization Performance:
+--------------------------------------------------
+
+Best generalization:  test_same_world (R²=-33.668)
+Worst generalization: test_same_rollout (R²=-546.161)

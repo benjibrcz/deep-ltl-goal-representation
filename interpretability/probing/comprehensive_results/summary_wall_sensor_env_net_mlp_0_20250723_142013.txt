@@ -1,0 +1,35 @@
+Comprehensive Environment Network Probe Summary
+==================================================
+
+Target Feature: wall_sensor
+Layer: env_net.mlp.0
+Timestamp: 20250723_142013
+
+Results by Split Type:
+-------------------------
+
+TEMPORAL SPLIT:
+  R² (test): 1.0000
+  MSE (test): 0.0000
+  Train samples: 1500
+  Test samples: 1500
+  PCA components: 20
+
+SPATIAL SPLIT:
+  R² (test): 1.0000
+  MSE (test): 0.0000
+  Train samples: 1500
+  Test samples: 1500
+  PCA components: 17
+
+ENVIRONMENTAL SPLIT:
+  R² (test): 1.0000
+  MSE (test): 0.0000
+  Train samples: 1500
+  Test samples: 1500
+  PCA components: 19
+
+Generalization Performance:
+-------------------------
+Temporal-Environmental Gap: 0.0000
+Best performing split: temporal (R² = 1.0000)

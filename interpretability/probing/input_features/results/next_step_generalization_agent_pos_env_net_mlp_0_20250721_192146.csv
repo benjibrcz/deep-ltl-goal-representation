@@ -1,0 +1,4 @@
+timestamp,split_type,target_feature,layer,prediction_type,r2_train,r2_test,mse_train,mse_test,n_train_samples,n_test_samples,feature_dim,target_dim
+20250721_192146,test_different_world,agent_pos,env_net.mlp.0,next_step,0.9912591973977446,-0.1735918709154186,0.006758179853371687,1.3688465018501101,400,650,128,2
+20250721_192146,test_same_rollout,agent_pos,env_net.mlp.0,next_step,0.9700854982438771,0.6712023488328505,0.030536678575169042,0.3957388805197201,525,525,128,2
+20250721_192146,test_same_world,agent_pos,env_net.mlp.0,next_step,0.9918435376547989,0.27363914464132005,0.006829850400826655,0.8803493465869836,450,600,128,2

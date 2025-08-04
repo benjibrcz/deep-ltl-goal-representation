@@ -1,0 +1,30 @@
+Comprehensive Generalization Analysis
+=====================================
+Timestamp: 20250722_202703
+Layer: env_net.mlp.0
+Target Feature: yellow_zone_lidar
+Number of Rollouts per World: 3
+Max Steps per Rollout: 50
+Total Rollouts Collected: 12
+Total Worlds Used: 4
+
+Split Statistics:
+--------------------------------------------------
+test_same_rollout:  300 train,  300 test samples
+test_same_world:  200 train,  400 test samples
+test_different_world:  300 train,  300 test samples
+
+Generalization Test Performance:
+--------------------------------------------------
+test_same_rollout   : R²=1.000, MSE=0.0000 (train=300, test=300)
+test_same_world     : R²=1.000, MSE=0.0000 (train=200, test=400)
+test_different_world: R²=1.000, MSE=0.0000 (train=300, test=300)
+
+Best generalization:  test_same_rollout (R²=1.000)
+Worst generalization: test_same_rollout (R²=1.000)
+
+Generalization Gaps (R² differences):
+--------------------------------------------------
+Same Rollout → Same World Gap:     +0.000
+Same World → Different World Gap:  +0.000
+Same Rollout → Different World Gap: +0.000

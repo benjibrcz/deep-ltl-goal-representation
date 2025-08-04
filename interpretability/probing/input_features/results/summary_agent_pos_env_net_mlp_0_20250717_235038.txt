@@ -1,0 +1,30 @@
+Comprehensive Generalization Analysis
+=====================================
+Timestamp: 20250717_235038
+Layer: env_net.mlp.0
+Target Feature: agent_pos
+Number of Rollouts per World: 3
+Max Steps per Rollout: 20
+Total Rollouts Collected: 30
+Total Worlds Used: 10
+
+Split Statistics:
+--------------------------------------------------
+test_same_rollout:  300 train,  300 test samples
+test_same_world:  200 train,  400 test samples
+test_different_world:  300 train,  300 test samples
+
+Generalization Test Performance:
+--------------------------------------------------
+test_same_rollout   : R²=0.918, MSE=0.0801 (train=300, test=300)
+test_same_world     : R²=0.052, MSE=0.8928 (train=200, test=400)
+test_different_world: R²=-1.545, MSE=2.3305 (train=300, test=300)
+
+Best generalization:  test_same_rollout (R²=0.918)
+Worst generalization: test_different_world (R²=-1.545)
+
+Generalization Gaps (R² differences):
+--------------------------------------------------
+Same Rollout → Same World Gap:     +0.865
+Same World → Different World Gap:  +1.598
+Same Rollout → Different World Gap: +2.463

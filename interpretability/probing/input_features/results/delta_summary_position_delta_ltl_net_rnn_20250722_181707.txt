@@ -1,0 +1,35 @@
+Comprehensive Movement Delta Prediction Analysis
+===============================================
+Timestamp: 20250722_181707
+Layer: ltl_net.rnn
+Target Feature: position_delta
+Prediction Type: Movement Delta (Δt = t - (t-1))
+Number of Rollouts per World: 10
+Max Steps per Rollout: 200
+Total Rollouts Collected: 100
+Total Worlds Used: 10
+
+Split Statistics:
+--------------------------------------------------
+test_same_rollout   : 9900 train, 10000 test samples
+test_same_world     : 9950 train, 9950 test samples
+test_different_world: 9950 train, 9950 test samples
+
+Movement Delta Prediction Performance:
+--------------------------------------------------
+test_same_rollout   : R²=0.001, MSE=0.0001 (train=9900, test=10000)
+test_same_world     : R²=-0.043, MSE=0.0001 (train=9950, test=9950)
+test_different_world: R²=-0.022, MSE=0.0001 (train=9950, test=9950)
+
+Best delta prediction:  test_same_rollout (R²=0.001)
+Worst delta prediction: test_same_world (R²=-0.043)
+
+Movement Delta Prediction Gaps (R² differences):
+--------------------------------------------------
+Same Rollout → Same World Gap:     +0.044
+Same World → Different World Gap:  -0.021
+Same Rollout → Different World Gap: +0.023
+
+Note: R² > 0 indicates better than random prediction.
+Delta prediction removes the trivial 'no movement' baseline,
+making these results more meaningful for assessing true predictive capability.

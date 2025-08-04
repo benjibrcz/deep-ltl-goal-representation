@@ -1,0 +1,4 @@
+timestamp,probe_type,split_type,target_feature,r2_train,r2_test,mse_train,mse_test,n_train,n_test,n_components,original_dims
+20250723_143150,output,temporal,joint_positions,1.0,1.0,0.0,0.0,1000,1000,18,64
+20250723_143150,output,spatial,joint_positions,1.0,1.0,0.0,0.0,1000,1000,17,64
+20250723_143150,output,environmental,joint_positions,1.0,1.0,0.0,0.0,1000,1000,16,64

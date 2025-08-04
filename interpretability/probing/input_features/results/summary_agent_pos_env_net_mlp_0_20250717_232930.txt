@@ -1,0 +1,21 @@
+Comprehensive Generalization Analysis
+=====================================
+Timestamp: 20250717_232930
+Layer: env_net.mlp.0
+Target Feature: agent_pos
+Number of Rollouts per World: 3
+Max Steps per Rollout: 50
+Total Rollouts Collected: 22
+Total Worlds Used: 10
+
+Split Statistics:
+--------------------------------------------------
+test_same_rollout:  525 train,  525 test samples
+test_same_world:  450 train,  600 test samples
+test_different_world:  400 train,  650 test samples
+
+Generalization Performance:
+--------------------------------------------------
+
+Best generalization:  test_same_rollout (R²=0.769)
+Worst generalization: test_different_world (R²=-0.178)

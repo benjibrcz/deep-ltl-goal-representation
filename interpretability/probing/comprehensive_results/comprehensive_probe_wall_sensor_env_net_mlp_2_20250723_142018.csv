@@ -1,0 +1,4 @@
+timestamp,split_type,target_feature,layer,r2_train,r2_test,mse_train,mse_test,n_train,n_test,n_components
+20250723_142018,temporal,wall_sensor,env_net.mlp.2,1.0,1.0,0.0,0.0,1500,1500,15
+20250723_142018,spatial,wall_sensor,env_net.mlp.2,1.0,1.0,0.0,0.0,1500,1500,15
+20250723_142018,environmental,wall_sensor,env_net.mlp.2,1.0,1.0,0.0,0.0,1500,1500,14

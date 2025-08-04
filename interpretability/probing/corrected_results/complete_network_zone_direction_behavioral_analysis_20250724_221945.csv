@@ -1,0 +1,4 @@
+timestamp,probe_type,goals,split_type,r2_test,mse_test,n_train,n_test,input_dims,pca_dims
+20250724_221945,complete_network_behavioral_analysis,FG blue,temporal,0.007715401244188291,0.4752616928626304,800,800,90,3
+20250724_221945,complete_network_behavioral_analysis,FG blue,spatial,-0.1615798405977557,0.5191339988048085,800,800,90,3
+20250724_221945,complete_network_behavioral_analysis,FG blue,environmental,-0.1076904709921328,0.5259350067391833,800,800,90,3

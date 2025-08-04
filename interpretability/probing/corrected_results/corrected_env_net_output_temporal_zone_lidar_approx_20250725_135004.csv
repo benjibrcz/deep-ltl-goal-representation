@@ -1,0 +1,2 @@
+timestamp,probe_type,split_method,split_type,target_feature,r2_train,r2_test,mse_train,mse_test,n_train,n_test,n_components,original_dims
+20250725_135004,output,temporal,temporal,zone_lidar_approx,0.7194781799000995,-0.28594683597370235,0.0038671283224257632,0.027857136070039937,500,500,14,64

@@ -1,0 +1,2 @@
+timestamp,probe_type,split_method,split_type,target_feature,r2_train,r2_test,mse_train,mse_test,n_train,n_test,n_components,original_dims
+20250725_135336,output,temporal,temporal,agent_sensors,-5.919791078309146e+21,-5.836985443366652e+21,4.056534550758288,4.559253113216518,5000,5000,22,64

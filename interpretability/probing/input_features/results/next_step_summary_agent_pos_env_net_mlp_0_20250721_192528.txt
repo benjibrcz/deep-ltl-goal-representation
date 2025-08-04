@@ -1,0 +1,31 @@
+Comprehensive Next-Step Prediction Analysis
+===========================================
+Timestamp: 20250721_192528
+Layer: env_net.mlp.0
+Target Feature: agent_pos
+Prediction Type: Next Step (t → t+1)
+Number of Rollouts per World: 3
+Max Steps per Rollout: 50
+Total Rollouts Collected: 23
+Total Worlds Used: 10
+
+Split Statistics:
+--------------------------------------------------
+test_same_rollout   :  550 train,  550 test samples
+test_same_world     :  450 train,  650 test samples
+test_different_world:  400 train,  700 test samples
+
+Next-Step Prediction Performance:
+--------------------------------------------------
+test_same_rollout   : R²=0.755, MSE=0.2419 (train=550, test=550)
+test_same_world     : R²=0.231, MSE=0.8138 (train=450, test=650)
+test_different_world: R²=-0.047, MSE=1.0529 (train=400, test=700)
+
+Best next-step prediction:  test_same_rollout (R²=0.755)
+Worst next-step prediction: test_different_world (R²=-0.047)
+
+Next-Step Prediction Gaps (R² differences):
+--------------------------------------------------
+Same Rollout → Same World Gap:     +0.524
+Same World → Different World Gap:  +0.278
+Same Rollout → Different World Gap: +0.802

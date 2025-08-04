@@ -1,0 +1,2 @@
+method,goal,split_method,k_steps,n_worlds,n_rollouts,max_steps,n_samples,x_train_r2,x_test_r2,y_train_r2,y_test_r2,distance_r2,mean_true_distance,mean_pred_distance,timestamp
+combined_embeddings,FG blue,steps,20,1,10,100,800,0.9598591296837687,0.9448511433406418,0.9486430348703498,0.9302044653997278,0.7781491413360789,0.3186469330436438,0.3049528,20250725_132112

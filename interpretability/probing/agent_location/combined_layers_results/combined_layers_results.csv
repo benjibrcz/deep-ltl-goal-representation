@@ -1,0 +1,2 @@
+method,train_r2,train_mse,train_mae,test_r2,test_mse,test_mae,n_components,feature_dim,n_layers,n_worlds
+combined_layers,0.5659582730456294,0.3979700698272548,0.49787220060677456,-3.1399923954172335,2.7792351417961294,1.488657265464671,8,580,12,11

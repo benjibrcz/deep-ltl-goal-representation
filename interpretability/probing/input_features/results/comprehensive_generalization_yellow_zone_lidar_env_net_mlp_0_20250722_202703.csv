@@ -1,0 +1,4 @@
+timestamp,split_type,target_feature,layer,r2_train,r2_test,mse_train,mse_test,n_train_samples,n_test_samples,feature_dim,target_dim
+20250722_202703,test_different_world,yellow_zone_lidar,env_net.mlp.0,1.0,1.0,0.0,0.0,300,300,128,16
+20250722_202703,test_same_rollout,yellow_zone_lidar,env_net.mlp.0,1.0,1.0,0.0,0.0,300,300,128,16
+20250722_202703,test_same_world,yellow_zone_lidar,env_net.mlp.0,1.0,1.0,0.0,0.0,200,400,128,16
