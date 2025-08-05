@@ -8,7 +8,7 @@ graph TD
     ENV[Environment state s_t] --> OE[Observation Encoder]
     OE --> OB[obs_emb]
 
-    ENV --> AP[AP labeling L(s_t)]
+    ENV --> AP[AP labeling L s_t]
     AP --> BT[Büchi Tracker q_t]
     BT --> EX[Reach-Avoid Seq Extractor]
     EX --> EN[Sequence Encoder]
