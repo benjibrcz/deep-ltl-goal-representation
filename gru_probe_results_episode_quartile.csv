@@ -1,0 +1,2 @@
+target,hidden_score,input_score,metric,shape,train_samples,test_samples
+episode_quartile,0.2857142857142857,0.25,"balanced_acc=0.286, macro_f1=0.274",1,720,180

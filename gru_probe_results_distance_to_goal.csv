@@ -1,0 +1,2 @@
+target,hidden_score,input_score,metric,shape,train_samples,test_samples
+distance_to_goal,-3.109398494287003,-3.119169788510427,"R²=-3.109, NRMSE=2.033, Spearman=0.027",1,720,180

@@ -1,0 +1,2 @@
+target,hidden_score,input_score,metric,shape,train_samples,test_samples
+target_zone_id,0.20832325431382034,0.21945049185615223,"balanced_acc=0.208, macro_f1=0.194",1,720,180

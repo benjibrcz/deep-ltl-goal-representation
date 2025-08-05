@@ -1,0 +1,2 @@
+target,hidden_score,input_score,metric,shape,train_samples,test_samples
+success_probability,-19.212143130763558,-19.222668729108584,"R²=-19.212, NRMSE=4.509, Spearman=0.027",1,720,180
