@@ -5,24 +5,24 @@ This diagram illustrates the complete neural network architecture, showing how e
 ```mermaid
 graph TD
     %% Per-timestep data flow
-    ENV[Environment<br/>state&nbsp;s_t] --> OE[Observation<br/>Encoder]
+    ENV[Environment state s_t] --> OE[Observation Encoder]
     OE --> OB[obs_emb]
 
-    ENV --> AP[AP&nbsp;labeling<br/>L(s_t)]
-    AP --> BT[Büchi&nbsp;Tracker<br/>q_t]
-    BT --> EX[Reach-Avoid<br/>Seq Extractor]
-    EX --> EN[Sequence<br/>Encoder]
+    ENV --> AP[AP labeling L(s_t)]
+    AP --> BT[Büchi Tracker q_t]
+    BT --> EX[Reach-Avoid Seq Extractor]
+    EX --> EN[Sequence Encoder]
     EN --> SEQ[seq_emb]
 
     OB --> VAL[Value Module]
     SEQ --> VAL
-    VAL --> SC[Value&nbsp;scores]
+    VAL --> SC[Value scores]
 
-    SC --> SEL[Sequence&nbsp;Selector<br/>best&nbsp;σ*]
+    SC --> SEL[Sequence Selector best σ*]
 
-    OB --> ACT[Actor Module<br/>(Policy)]
+    OB --> ACT[Actor Module Policy]
     SEL --> ACT
-    ACT --> ACTN[Action&nbsp;a_t]
+    ACT --> ACTN[Action a_t]
     ACTN --> ENV
 ```
 
