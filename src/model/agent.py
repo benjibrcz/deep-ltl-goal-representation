@@ -13,11 +13,32 @@ class Agent:
         self.propositions = propositions
         self.verbose = verbose
         self.sequence = None
+        self._last_goal = None            # track last seen goal string
+        self.auto_flush_on_goal = True    # default: enable auto-flush on goal change
+
 
     def reset(self):
         self.sequence = None
+        self._last_goal = None
 
     def get_action(self, obs, info, deterministic=False) -> np.ndarray:
+        # --- auto-flush planned sequence on goal change / LDBA change ---
+        if getattr(self, "auto_flush_on_goal", False):
+            # 1) If LDBA wrapper signals a state change, drop the plan.
+            if isinstance(info, dict) and info.get("ldba_state_changed", False):
+                self.sequence = None
+
+            # 2) If the textual goal changed, drop the plan.
+            try:
+                goal_str = obs.get("goal") if isinstance(obs, dict) else None
+            except Exception:
+                goal_str = None
+
+            if goal_str is not None and goal_str != getattr(self, "_last_goal", None):
+                self.sequence = None
+                self._last_goal = goal_str
+        # --- end auto-flush guard ---
+
         if self.sequence is not None and len(self.sequence) > 0:
             current_goal_assignment_set, _ = self.sequence[0]
             

@@ -55,12 +55,12 @@ from sequence.search        import ExhaustiveSearch
 from model.agent            import Agent
 import preprocessing
 
-# ─── Small, fast default dataset sizes ─────────────────────────────────────────
+# ─── Larger dataset for comprehensive probing ──────────────────────────────────
 ENV, EXP  = "PointLtl2-v0", "big_test"
 SEED      = 0
 N_WORLDS  = 10
 N_ROLLOUT = 10
-MAX_STEP  = 200
+MAX_STEP  = 500
 
 # ── Goal variation parameters ───────────────────────────────────────────────────
 COLOURS = ["blue", "green", "yellow", "magenta"]  # Basic colors likely available
@@ -78,12 +78,50 @@ ACTION_TO_DELTA = {
     3: [-1, 0],  # left
 }
 
+# ── Label helper functions (improved velocity handling) ───────────────────────
+def body_vel(env, obs):
+    """Extract body-frame velocity from observation features."""
+    return obs['features'][35:38]  # vx, vy, vz in body frame
+
+def world_speed(env, obs):
+    """Calculate world-frame speed from body-frame velocity."""
+    vx, vy, _ = body_vel(env, obs)
+    # rotate by current yaw (if available) to world frame
+    yaw = getattr(env, 'agent_yaw', 0.0)
+    c, s = np.cos(yaw), np.sin(yaw)
+    v_world = np.array([c*vx - s*vy, s*vx + c*vy])
+    return np.linalg.norm(v_world)
+
+def get_yaw_rate(env, obs):
+    """Extract yaw rate from observation features."""
+    return obs['features'][40]  # wz directly
+
+def time_diff_velocity(env, obs):
+    """Calculate acceleration from velocity time difference."""
+    if not hasattr(time_diff_velocity, 'prev_vel'):
+        time_diff_velocity.prev_vel = body_vel(env, obs)
+        return np.array([0.0, 0.0, 0.0])
+    
+    v_now = body_vel(env, obs)
+    v_prev = time_diff_velocity.prev_vel
+    acc = (v_now - v_prev) / 0.02  # Assuming 20ms timesteps
+    time_diff_velocity.prev_vel = v_now.copy()
+    return acc
+
 # ── All available targets ───────────────────────────────────────────────────────
 ALL_TARGETS = [
     # Actor-specific targets
     "action_logits", "action_index", "td_value", "delta_xy", "delta_xy_class", "collision_imminence",
     # Multi-step planning targets
     "pose_k5", "pose_k10",
+    # Egocentric planning probes
+    "delta_body_1step", "delta_body_5step", "heading_change",
+    # Velocity probes (recommended by user)
+    "vz", "wz", "wz_sign", "speed_xy", "speed_xy_sign", "acc_xy",  # Core velocity quantities
+    # Legacy physics-based probes (keeping for comparison)
+    "vx_vy", "speed_sq", "fwd_speed", "side_speed", "vel_3d", "vel_stats", "yaw_rate",
+    # Future prediction probes
+    "next_wall_lidar", "successor_value", "automaton_edge",
     # Environment targets
     "agent_pos", "zone_id", "current_goal_colour", "zone_distances", "zone_directions",
     # Sensor targets
@@ -103,7 +141,12 @@ def get_target(env, obs, name):
     # Layout: acc(0-2), wall(3-18), zone(19-34), vel(35-37), gyro(38-40), contact(41-46), remaining(47-79)
     if name == "agent_sensors":
         # acc(3) + gyro(3) + vel(3) = 9D sensor data
-        return np.concatenate([features[0:3], features[38:41], features[35:38]]).copy()  # acc + gyro + vel
+        # Clip acceleration values to prevent overflow in StandardScaler
+        # Accelerometer can spike to ±20g, causing numerical issues
+        acc_features = np.clip(features[0:3], -10.0, 10.0)  # Clip to ±10g
+        gyro_features = features[38:41]  # Angular velocity
+        vel_features = features[35:38]   # Linear velocity
+        return np.concatenate([acc_features, gyro_features, vel_features]).copy()
     elif name == "zone_lidar":
         return features[19:35].copy()  # zone(19-34) - 16D
     elif name == "wall_lidar":
@@ -211,6 +254,245 @@ def get_target(env, obs, name):
         collision_imminent = 1 if min_distance < 0.1 else 0
         return np.array([collision_imminent], dtype=int)
     
+    elif name == "delta_body_1step":
+        # Egocentric displacement in body frame (1 step ahead)
+        # This requires storing position and yaw from previous step
+        if not hasattr(get_target, 'prev_pos') or not hasattr(get_target, 'prev_yaw'):
+            get_target.prev_pos = env.agent_pos[:2].copy()
+            get_target.prev_yaw = getattr(env, 'agent_yaw', 0.0)
+            return np.array([0.0, 0.0])  # First step
+        
+        # Compute global displacement
+        current_pos = env.agent_pos[:2].copy()
+        current_yaw = getattr(env, 'agent_yaw', 0.0)
+        delta_global = current_pos - get_target.prev_pos
+        
+        # Transform to body frame
+        yaw = get_target.prev_yaw  # Use previous yaw as reference
+        c, s = np.cos(-yaw), np.sin(-yaw)
+        R = np.array([[c, -s], [s, c]])
+        delta_body = R @ delta_global
+        
+        # Update stored values
+        get_target.prev_pos = current_pos.copy()
+        get_target.prev_yaw = current_yaw
+        
+        return delta_body
+    
+    elif name == "delta_body_5step":
+        # Egocentric displacement in body frame (5 steps ahead)
+        # This requires a buffer of positions and yaws
+        if not hasattr(get_target, 'pos_buffer'):
+            get_target.pos_buffer = []
+            get_target.yaw_buffer = []
+        
+        current_pos = env.agent_pos[:2].copy()
+        current_yaw = getattr(env, 'agent_yaw', 0.0)
+        
+        get_target.pos_buffer.append(current_pos)
+        get_target.yaw_buffer.append(current_yaw)
+        
+        # Need at least 6 positions to compute 5-step displacement
+        if len(get_target.pos_buffer) < 6:
+            return np.array([0.0, 0.0])
+        
+        # Compute 5-step displacement
+        pos_t = get_target.pos_buffer[-6]  # 5 steps ago
+        yaw_t = get_target.yaw_buffer[-6]
+        pos_tp5 = get_target.pos_buffer[-1]  # current position
+        
+        delta_global = pos_tp5 - pos_t
+        
+        # Transform to body frame at time t
+        c, s = np.cos(-yaw_t), np.sin(-yaw_t)
+        R = np.array([[c, -s], [s, c]])
+        delta_body = R @ delta_global
+        
+        return delta_body
+    
+    elif name == "heading_change":
+        # Estimate heading from successive positions
+        if not hasattr(get_target, "heading_change_prev_pos"):
+            get_target.heading_change_prev_pos  = env.agent_pos[:2].copy()
+            get_target.heading_change_prev_hdg  = 0.0
+            return np.array([8], dtype=int)        # neutral first step
+
+        # current heading
+        delta = env.agent_pos[:2] - get_target.heading_change_prev_pos
+        if np.linalg.norm(delta) < 1e-6:
+            hdg = get_target.heading_change_prev_hdg             # no movement → keep old heading
+        else:
+            hdg = np.arctan2(delta[1], delta[0])  # radians [-π,π)
+
+        # heading change
+        dpsi = ((hdg - get_target.heading_change_prev_hdg + np.pi) % (2*np.pi)) - np.pi
+        cls  = int(np.floor((dpsi + np.pi) / (2*np.pi/16)))  # 16 bins (0-15)
+
+        # Debug: check if we're getting variety
+        if not hasattr(get_target, 'heading_change_debug_count'):
+            get_target.heading_change_debug_count = 0
+        get_target.heading_change_debug_count += 1
+        if get_target.heading_change_debug_count <= 10:  # Print first 10 steps
+            # print(f"DEBUG: delta={delta}, hdg={hdg:.3f}, prev_hdg={get_target.heading_change_prev_hdg:.3f}, dpsi={dpsi:.3f}, cls={cls}")
+            # Also check action space type
+            if get_target.heading_change_debug_count == 1:
+                # print(f"DEBUG: env.action_space = {env.action_space}")
+                # print(f"DEBUG: env.action_space.shape = {getattr(env.action_space, 'shape', 'N/A')}")
+                # print(f"DEBUG: env.action_space.n = {getattr(env.action_space, 'n', 'N/A')}")
+                pass
+
+        # update
+        get_target.heading_change_prev_pos = env.agent_pos[:2].copy()
+        get_target.heading_change_prev_hdg = hdg
+
+        return np.array([cls], dtype=int)
+    
+    elif name == "next_wall_lidar":
+        # Next-step wall-lidar (16-beam vector at t+1)
+        # This requires storing the current observation and getting the next one
+        if not hasattr(get_target, 'current_obs'):
+            get_target.current_obs = obs
+            return np.zeros(16)  # First step - no next observation yet
+        
+        # Store current observation for next step comparison
+        next_obs = get_target.current_obs
+        get_target.current_obs = obs
+        
+        # Extract wall lidar from next observation
+        if 'features' in next_obs:
+            wall_lidar = next_obs['features'][3:19]  # wall(3-18) - 16D
+            return wall_lidar
+        else:
+            return np.zeros(16)
+    
+    elif name == "successor_value":
+        # Successor-value (V_t+5) - run critic 5 steps ahead
+        # This is a placeholder - would need to implement Monte Carlo rollout
+        # For now, use a simple heuristic based on current observation
+        features = obs['features']
+        
+        # Simple heuristic: use distance to goal zones as proxy for future value
+        zone_lidar = features[19:35]  # zone(19-34) - 16D
+        max_zone_intensity = np.max(zone_lidar)
+        
+        # Convert to value estimate (0-1)
+        value = max_zone_intensity if max_zone_intensity > 0 else 0.1
+        return np.array([value])
+    
+    elif name == "automaton_edge":
+        # Predicted automaton edge (which LTL transition fires next)
+        # This requires tracking the automaton state transitions
+        if not hasattr(get_target, 'prev_automaton_state'):
+            get_target.prev_automaton_state = obs.get('ldba_state', 0)
+            return np.array([0], dtype=int)  # First step
+        
+        current_state = obs.get('ldba_state', 0)
+        prev_state = get_target.prev_automaton_state
+        
+        # Check if state changed (edge fired)
+        edge_fired = 1 if current_state != prev_state else 0
+        
+        get_target.prev_automaton_state = current_state
+        
+        return np.array([edge_fired], dtype=int)
+    
+    elif name == "next_velocity":
+        # Next velocity v_{t+1} - what the physics engine produces from the action
+        # This requires storing velocity from the previous step
+        if not hasattr(get_target, 'prev_velocity'):
+            get_target.prev_velocity = np.zeros(2)  # First step
+            return np.zeros(2)
+        
+        # Current velocity (after physics step)
+        current_velocity = getattr(env, 'agent_vel', np.zeros(2))
+        
+        # Debug: check if velocity is accessible
+        if not hasattr(get_target, 'debug_vel_count'):
+            get_target.debug_vel_count = 0
+        get_target.debug_vel_count += 1
+        if get_target.debug_vel_count <= 5:
+            # print(f"DEBUG: env.agent_vel exists: {hasattr(env, 'agent_vel')}")
+            # print(f"DEBUG: current_velocity: {current_velocity}")
+            # print(f"DEBUG: env attributes with 'vel': {[attr for attr in dir(env) if 'vel' in attr.lower()]}")
+            # print(f"DEBUG: env attributes with 'agent': {[attr for attr in dir(env) if 'agent' in attr.lower()]}")
+            pass
+        
+        # Store for next step
+        next_velocity = current_velocity.copy()
+        get_target.prev_velocity = current_velocity.copy()
+        
+        return next_velocity
+    
+    elif name == "speed":
+        # Signed speed ||v_{t+1}|| - use velocity from observation features
+        features = obs['features']
+        # Layout: acc(0-2), wall(3-18), zone(19-34), vel(35-37), gyro(38-40), contact(41-46), remaining(47-79)
+        velocity_features = features[35:38]  # vel(35-37) - 3D velocity
+        speed = np.linalg.norm(velocity_features)
+        
+        return np.array([speed])
+    
+    elif name == "yaw_rate":
+        # Yaw rate ω_t = atan2(vy, vx) - atan2(prev_vy, prev_vx)
+        if not hasattr(get_target, 'prev_velocity'):
+            get_target.prev_velocity = np.zeros(2)
+            return np.array([0.0])
+        
+        current_velocity = getattr(env, 'agent_vel', np.zeros(2))
+        prev_velocity = get_target.prev_velocity
+        
+        # Compute yaw rates
+        current_yaw = np.arctan2(current_velocity[1], current_velocity[0])
+        prev_yaw = np.arctan2(prev_velocity[1], prev_velocity[0])
+        
+        # Handle wrapping
+        yaw_rate = ((current_yaw - prev_yaw + np.pi) % (2*np.pi)) - np.pi
+        
+        get_target.prev_velocity = current_velocity.copy()
+        
+        return np.array([yaw_rate])
+    
+    elif name == "delta_pos_world":
+        # Δpos in world frame p_{t+1} - p_t
+        if not hasattr(get_target, 'prev_pos'):
+            get_target.prev_pos = env.agent_pos[:2].copy()
+            return np.zeros(2)
+        
+        current_pos = env.agent_pos[:2].copy()
+        prev_pos = get_target.prev_pos
+        
+        delta_pos = current_pos - prev_pos
+        get_target.prev_pos = current_pos.copy()
+        
+        return delta_pos
+    
+    elif name == "delta_pos_body":
+        # Δpos in body frame (rotation-invariant)
+        if not hasattr(get_target, 'delta_pos_body_prev_pos') or not hasattr(get_target, 'delta_pos_body_prev_hdg'):
+            get_target.delta_pos_body_prev_pos = env.agent_pos[:2].copy()
+            get_target.delta_pos_body_prev_hdg = 0.0
+            return np.zeros(2)
+        
+        current_pos = env.agent_pos[:2].copy()
+        prev_pos = get_target.delta_pos_body_prev_pos
+        
+        # Compute heading from movement direction
+        delta_world = current_pos - prev_pos
+        if np.linalg.norm(delta_world) < 1e-6:
+            heading = get_target.delta_pos_body_prev_hdg  # no movement → keep old heading
+        else:
+            heading = np.arctan2(delta_world[1], delta_world[0])
+        
+        # Transform to body frame
+        c, s = np.cos(-heading), np.sin(-heading)
+        R = np.array([[c, -s], [s, c]])
+        delta_body = R @ delta_world
+        
+        get_target.delta_pos_body_prev_pos = current_pos.copy()
+        get_target.delta_pos_body_prev_hdg = heading
+        
+        return delta_body
+    
     elif name == "pose_k5":
         # The label is already stored in buf_lbl_dict by the rollout post-processing,
         # so here we just return a dummy – it will never be called.
@@ -227,11 +509,31 @@ def get_target(env, obs, name):
 def get_actor_target(env, obs, action, agent, name):
     """Extract actor-specific target features."""
     if name == "action_logits":
-        if hasattr(agent, 'last_logits'):
-            return agent.last_logits.cpu().numpy()
+        # For continuous actions, the logits are the action parameters (mean, std)
+        # The fusion hook captures the distribution parameters (μ, log σ)
+        if isinstance(action, np.ndarray):
+            # Handle both 1D and 2D arrays
+            if action.ndim == 2:
+                # 2D array [[x, y]] -> flatten to [x, y]
+                return action.flatten()
+            elif action.ndim == 1 and len(action) == 2:
+                # 1D array [x, y] -> return as is
+                return action
+            else:
+                # Fallback: dummy logits
+                return np.array([0.0, 0.0])
         else:
             # Fallback: dummy logits
-            return np.array([[0.0, 0.0, 0.0, 0.0]])
+            return np.array([0.0, 0.0])
+    
+    # Debug: check what action we're getting
+    if name == "action_logits" and not hasattr(get_actor_target, 'debug_action_count'):
+        get_actor_target.debug_action_count = 0
+    if name == "action_logits":
+        get_actor_target.debug_action_count += 1
+        if get_actor_target.debug_action_count <= 5:
+            # print(f"DEBUG: action type: {type(action)}, shape: {getattr(action, 'shape', 'N/A')}, value: {action}")
+            pass
     
     elif name == "action_index":
         # Convert action to index
@@ -328,6 +630,218 @@ def get_actor_target(env, obs, action, agent, name):
         # Fall back to environment targets
         return get_target(env, obs, name)
 
+def get_actor_target_with_state(env, obs, action, agent, name, pre_state=None, post_state=None):
+    """Extract actor-specific target features using pre/post state."""
+    
+    # Physics-based targets that need post-step state
+    if name == "delta_pos_world":
+        # Skip this probe - it's an arbitrary heuristic
+        return np.zeros(2)
+    
+    elif name == "next_velocity":
+        # Skip this probe - it's redundant with vx_vy
+        return np.zeros(2)
+    
+    elif name == "vx_vy":
+        # Body-frame velocity components (vx, vy)
+        features = obs['features']
+        vx = features[35]  # forward + / back - (body-frame)
+        vy = features[36]  # left + / right - (body-frame)
+        
+        # Debug: print velocity components for first few samples
+        if not hasattr(get_actor_target_with_state, 'debug_vx_vy_count'):
+            get_actor_target_with_state.debug_vx_vy_count = 0
+        get_actor_target_with_state.debug_vx_vy_count += 1
+        if get_actor_target_with_state.debug_vx_vy_count <= 3:
+            # print(f"DEBUG: vx_vy [vx, vy] = [{vx:.3f}, {vy:.3f}]")
+            # print(f"DEBUG: Direction signs: vx={np.sign(vx)}, vy={np.sign(vy)}")
+            pass
+        
+        return np.array([vx, vy], dtype=np.float32)  # Return vx, vy components
+    
+    elif name == "speed_sq":
+        # Speed squared (quadratic but linear in squared components)
+        features = obs['features']
+        acc_features = features[0:3]  # acc(0-2) - 3D (use acceleration as proxy for velocity)
+        speed_sq = acc_features[0]**2 + acc_features[1]**2 + acc_features[2]**2
+        return np.array([speed_sq])
+    
+    elif name == "fwd_speed":
+        # body-frame forward speed (signed; forward ≈ negative)
+        features = obs['features']
+        fwd_speed = features[37]  # body-frame forward speed
+        
+        # Debug: print velocity statistics for first few samples
+        if not hasattr(get_actor_target_with_state, 'debug_vel_stats_count'):
+            get_actor_target_with_state.debug_vel_stats_count = 0
+        get_actor_target_with_state.debug_vel_stats_count += 1
+        if get_actor_target_with_state.debug_vel_stats_count <= 10:
+            vx = features[35]  # world-frame x (should be 0)
+            vy = features[36]  # world-frame y (should be 0)
+            vz = features[37]  # body-frame forward speed
+            # print(f"DEBUG: vx={vx:.3f}, vy={vy:.3f}, vz={vz:.3f}")
+            pass
+        
+        return np.array([fwd_speed], dtype=np.float32)
+    
+    elif name == "side_speed":
+        # lateral speed (side-stepping) - body-frame velocity components
+        features = obs['features']
+        # Body-frame velocity: vx (forward/back), vy (left/right), vz (up/down)
+        vx = features[35]  # forward + / back - (body-frame)
+        vy = features[36]  # left + / right - (body-frame)
+        vz = features[37]  # up + / down - (body-frame)
+        
+        # Debug: print velocity direction statistics for first few samples
+        if not hasattr(get_actor_target_with_state, 'debug_vel_direction_count'):
+            get_actor_target_with_state.debug_vel_direction_count = 0
+        get_actor_target_with_state.debug_vel_direction_count += 1
+        if get_actor_target_with_state.debug_vel_direction_count <= 5:
+            # print(f"DEBUG: Body-frame velocity [35:38] = {features[35:38]}")
+            # print(f"DEBUG: Angular velocity [38:41] = {features[38:41]}")
+            # print(f"DEBUG: vx={vx:.3f} (forward/back), vy={vy:.3f} (left/right), vz={vz:.3f} (up/down)")
+            pass
+        
+        # Return lateral velocity (left/right movement)
+        return np.array([vy], dtype=np.float32)  # Left + / right - movement
+    
+    elif name == "vel_3d":
+        # Full 3D velocity vector (body-frame)
+        features = obs['features']
+        # Body-frame velocity: vx (forward/back), vy (left/right), vz (up/down)
+        vx = features[35]  # forward + / back - (body-frame)
+        vy = features[36]  # left + / right - (body-frame)
+        vz = features[37]  # up + / down - (body-frame)
+        
+        # Debug: print 3D velocity for first few samples
+        if not hasattr(get_actor_target_with_state, 'debug_vel_3d_count'):
+            get_actor_target_with_state.debug_vel_3d_count = 0
+        get_actor_target_with_state.debug_vel_3d_count += 1
+        if get_actor_target_with_state.debug_vel_3d_count <= 3:
+            # print(f"DEBUG: 3D velocity [vx, vy, vz] = [{vx:.3f}, {vy:.3f}, {vz:.3f}]")
+            # print(f"DEBUG: Speed = {np.sqrt(vx**2 + vy**2 + vz**2):.3f}")
+            # print(f"DEBUG: Direction signs: vx={np.sign(vx)}, vy={np.sign(vy)}, vz={np.sign(vz)}")
+            pass
+        
+        # Return full 3D velocity vector
+        return np.array([vx, vy, vz], dtype=np.float32)
+    
+    elif name == "vel_stats":
+        # Comprehensive velocity statistics for all components
+        features = obs['features']
+        
+        # Collect all velocity-related components
+        vx = features[35]  # world-frame x (always 0)
+        vy = features[36]  # world-frame y (always 0) 
+        vz = features[37]  # body-frame forward speed (varies)
+        ax = features[0]   # acceleration x
+        ay = features[1]   # acceleration y
+        az = features[2]   # acceleration z
+        gyro_x = features[38]  # angular velocity x
+        gyro_y = features[39]  # angular velocity y
+        
+        # Debug: check for angle-related features
+        if not hasattr(get_actor_target_with_state, 'debug_angle_count'):
+            get_actor_target_with_state.debug_angle_count = 0
+        get_actor_target_with_state.debug_angle_count += 1
+        if get_actor_target_with_state.debug_angle_count <= 3:
+            # print(f"DEBUG: Full features [0:80] = {features}")
+            # print(f"DEBUG: Looking for angle features...")
+            # Check if there are any features that could represent angles
+            # for i in range(0, 80, 10):
+            #     print(f"DEBUG: Features [{i}:{i+10}] = {features[i:i+10]}")
+            pass
+        
+        # Return comprehensive velocity statistics
+        # This will help us understand the full velocity encoding
+        return np.array([vx, vy, vz, ax, ay, az, gyro_x, gyro_y], dtype=np.float32)
+    
+    elif name == "speed":
+        # Original speed (non-linear, should be harder for linear probe)
+        features = obs['features']
+        acc_features = features[0:3]  # acc(0-2) - 3D (use acceleration as proxy for velocity)
+        speed = np.linalg.norm(acc_features)
+        
+        # Debug: check what acceleration features we're getting
+        if not hasattr(get_actor_target_with_state, 'debug_speed_count'):
+            get_actor_target_with_state.debug_speed_count = 0
+        get_actor_target_with_state.debug_speed_count += 1
+        if get_actor_target_with_state.debug_speed_count <= 5:
+            # print(f"DEBUG: acc_features = {acc_features}")
+            # print(f"DEBUG: speed = {speed}")
+            pass
+        
+        return np.array([speed])
+    
+    elif name == "yaw_rate":
+        # Use the SAME observation that produced the fusion embedding
+        # For now, use gyro features as a proxy for yaw rate
+        features = obs['features']
+        gyro_features = features[38:41]  # gyro(38-40) - 3D
+        # Use z-component as yaw rate (simplified)
+        yaw_rate = gyro_features[2] if len(gyro_features) > 2 else 0.0
+        return np.array([yaw_rate])
+    
+    elif name == "delta_pos_body":
+        # Skip this probe - it's an arbitrary heuristic
+        return np.zeros(2)
+    
+    # New velocity probes (improved implementation)
+    elif name == "vz":
+        # Signed forward speed (vertical velocimeter)
+        features = obs['features']
+        vz = features[37]  # body-frame forward speed (signed)
+        return np.array([vz], dtype=np.float32)
+    
+    elif name == "wz":
+        # Yaw rate (from gyro)
+        wz = get_yaw_rate(env, obs)
+        return np.array([wz], dtype=np.float32)
+    
+    elif name == "wz_sign":
+        # Yaw rate sign (binary classification)
+        wz = get_yaw_rate(env, obs)
+        wz_sign = 1 if wz > 0 else 0  # Binary: turning left (1) or right (0)
+        return np.array([wz_sign], dtype=int)
+    
+    elif name == "speed_xy":
+        # Real horizontal speed derived from positions (coarser horizon)
+        if pre_state is None or post_state is None:
+            return np.array([0.0], dtype=np.float32)
+        
+        # Calculate displacement magnitude over 5 steps for better resolution
+        # This reduces numerical noise from single-step measurements
+        delta_pos = post_state['pos'] - pre_state['pos']
+        speed_xy = np.linalg.norm(delta_pos)
+        
+        # Scale to m/s (assuming 20ms timesteps)
+        speed_xy = speed_xy / 0.02  # Convert from m/step to m/s
+        
+        return np.array([speed_xy], dtype=np.float32)
+    
+    elif name == "speed_xy_sign":
+        # Binary classification: moving vs not moving
+        if pre_state is None or post_state is None:
+            return np.array([0], dtype=int)
+        
+        # Calculate speed from position change (same as speed_xy)
+        delta_pos = post_state['pos'] - pre_state['pos']
+        speed_xy = np.linalg.norm(delta_pos) / 0.02  # Convert to m/s
+        
+        # Threshold at 0.1 m/s for meaningful movement
+        moving = 1 if speed_xy > 0.1 else 0
+        return np.array([moving], dtype=int)
+    
+    elif name == "acc_xy":
+        # Horizontal acceleration from velocity time difference
+        acc = time_diff_velocity(env, obs)
+        acc_xy = np.sqrt(acc[0]**2 + acc[1]**2)  # Magnitude of horizontal acceleration
+        return np.array([acc_xy], dtype=np.float32)
+    
+    else:
+        # Fall back to original function for other targets
+        return get_actor_target(env, obs, action, agent, name)
+
 def validate_target_data(Y, target_name):
     """Validate target data quality."""
     print(f"\n📊 {target_name} Data Quality:")
@@ -386,9 +900,23 @@ def train_and_evaluate_probe(X_train, X_test, y_train, y_test, target_name):
     # Check if this is an identity target (X == y)
     y_is_raw_input = target_name in ["action_logits", "agent_sensors", "zone_lidar", "wall_lidar", "wall_sensor", "raw_features"]
     
+    # Determine appropriate metric based on target type
+    if target_name.endswith('_sign') or target_name in ['zone_id', 'current_goal_colour', 'action_index', 'delta_xy_class', 'heading_change']:
+        metric = 'accuracy'
+        # Use balanced class weights for imbalanced datasets
+        pipe = make_pipeline(StandardScaler(),
+                           LogisticRegression(max_iter=1000, class_weight="balanced"))
+    elif target_name == "collision_imminence":
+        metric = 'AUROC'
+        pipe = make_pipeline(StandardScaler(),
+                           LogisticRegression(max_iter=1000, class_weight="balanced"))
+    else:
+        metric = 'R²'
+        pipe = make_pipeline(StandardScaler(), Ridge(alpha=10.0))
+    
     # For multi-dimensional targets, we need to handle each dimension separately
     if len(y_train.shape) > 1 and y_train.shape[1] > 1:
-        print(f"  DEBUG: Multi-dimensional target detected: {y_train.shape}")
+        # print(f"  DEBUG: Multi-dimensional target detected: {y_train.shape}")
         # Multi-dimensional regression - handle each dimension separately
         scores = []
         for i in range(y_train.shape[1]):
@@ -399,10 +927,10 @@ def train_and_evaluate_probe(X_train, X_test, y_train, y_test, target_name):
             pipe_dim.fit(X_train, y_train_dim)
             y_pred_dim = pipe_dim.predict(X_test)
             
-            # Calculate R² for this dimension
+            # Calculate R² for this dimension (with epsilon to prevent overflow)
             ss_res = np.sum((y_test_dim - y_pred_dim) ** 2)
             ss_tot = np.sum((y_test_dim - np.mean(y_test_dim)) ** 2)
-            if ss_tot > 0:
+            if ss_tot > 1e-12:  # Add epsilon to prevent division by tiny values
                 score_dim = 1 - (ss_res / ss_tot)
             else:
                 score_dim = 1.0
@@ -411,57 +939,64 @@ def train_and_evaluate_probe(X_train, X_test, y_train, y_test, target_name):
         # Return average R² across dimensions
         return np.mean(scores), "R²"
     
-    # Create pipeline for classification or single-dimensional regression
-    if clf_task:
-        pipe = make_pipeline(StandardScaler(), 
-                           LogisticRegression(max_iter=1000, class_weight="balanced"))
-        y_train_flat = y_train.ravel()
-        y_test_flat = y_test.ravel()
-    else:
-        if y_is_raw_input:
-            # Skip scaling for identity targets to avoid overflow
-            pipe = Ridge(alpha=1.0)
-        else:
-            pipe = make_pipeline(StandardScaler(), Ridge(alpha=10.0))
-        # Single-dimensional regression
-        y_train_flat = y_train.ravel()
-        y_test_flat = y_test.ravel()
+    # Single-dimensional target
+    y_train_flat = y_train.ravel()
+    y_test_flat = y_test.ravel()
     
-    # Train and predict (for classification or single-dimensional regression)
+    # Train and predict
     pipe.fit(X_train, y_train_flat)
     y_pred = pipe.predict(X_test)
     
-    # Calculate score
-    if clf_task:
-        if target_name == "collision_imminence":
-            # Use AUROC for binary classification
-            score = roc_auc_score(y_test_flat, y_pred)
-            metric = "AUROC"
+    # Calculate score based on metric type
+    if metric == 'accuracy':
+        score = accuracy_score(y_test_flat, y_pred)
+    elif metric == 'AUROC':
+        # For AUROC, we need probability predictions
+        if hasattr(pipe, 'predict_proba'):
+            y_pred_proba = pipe.predict_proba(X_test)[:, 1]  # Probability of positive class
         else:
-            score = accuracy_score(y_test_flat, y_pred)
-            metric = "accuracy"
-    else:
+            y_pred_proba = y_pred  # Fallback to binary predictions
+        score = roc_auc_score(y_test_flat, y_pred_proba)
+    else:  # R²
         if y_is_raw_input:
             # For identity targets, use simple R² calculation
-            # Calculate R² manually to avoid multioutput issues
             ss_res = np.sum((y_test_flat - y_pred) ** 2)
             ss_tot = np.sum((y_test_flat - np.mean(y_test_flat)) ** 2)
-            if ss_tot > 0:
+            if ss_tot > 1e-12:  # Add epsilon to prevent division by tiny values
                 score = 1 - (ss_res / ss_tot)
             else:
                 score = 1.0
-            metric = "R²"
         else:
             score = r2_score(y_test_flat, y_pred, multioutput="uniform_average")
-            metric = "R²"
     
     return score, metric
+
+def validate_label_quality(X_raw, y, target_name):
+    """Quick sanity check: train Ridge on raw 80-D features to validate label quality."""
+    if target_name in ["action_logits", "agent_sensors", "zone_lidar", "wall_lidar", "wall_sensor"]:
+        return  # Skip identity targets
+    
+    # Use Ridge regression on raw features
+    pipe_raw = make_pipeline(StandardScaler(), Ridge(alpha=1.0))
+    pipe_raw.fit(X_raw, y.ravel())
+    y_pred_raw = pipe_raw.predict(X_raw)
+    
+    # Calculate R² on raw features
+    score_raw = r2_score(y.ravel(), y_pred_raw)
+    
+    print(f"  📊 Raw feature R²: {score_raw:.3f}")
+    if score_raw < 0.1:
+        print(f"  ⚠️  WARNING: Low raw feature R² - label may be flawed")
+    
+    return score_raw
 
 # ── Main ────────────────────────────────────────────────────────────────────────
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--target", help="specific target to decode")
     ap.add_argument("--all", action="store_true", help="probe all available targets")
+    ap.add_argument("--cv", action="store_true", help="use 5-fold cross-validation over worlds")
+    ap.add_argument("--mlp", action="store_true", help="use MLP instead of Ridge for non-linear probing")
     args = ap.parse_args()
 
     if not args.target and not args.all:
@@ -485,6 +1020,30 @@ def main():
     current_env = None
     current_obs = None
     current_action = None
+    
+    def reset_buffer_state():
+        """Reset buffer state to prevent cross-rollout contamination."""
+        # Reset function-level static variables
+        if hasattr(get_target, 'prev_pos'):
+            delattr(get_target, 'prev_pos')
+        if hasattr(get_target, 'prev_yaw'):
+            delattr(get_target, 'prev_yaw')
+        if hasattr(get_target, 'pos_buffer'):
+            delattr(get_target, 'pos_buffer')
+        if hasattr(get_target, 'yaw_buffer'):
+            delattr(get_target, 'yaw_buffer')
+        if hasattr(get_target, 'heading_change_prev_pos'):
+            delattr(get_target, 'heading_change_prev_pos')
+        if hasattr(get_target, 'heading_change_prev_hdg'):
+            delattr(get_target, 'heading_change_prev_hdg')
+        if hasattr(get_target, 'current_obs'):
+            delattr(get_target, 'current_obs')
+        if hasattr(get_target, 'prev_automaton_state'):
+            delattr(get_target, 'prev_automaton_state')
+        
+        # Reset helper function state
+        if hasattr(time_diff_velocity, 'prev_vel'):
+            delattr(time_diff_velocity, 'prev_vel')
     current_agent = None
     current_wid = 0  # Track current world ID
     world_ids = []  # Record world IDs in post_hook
@@ -524,17 +1083,32 @@ def main():
         if current_embedding is not None:
             buf_actor_input.append(current_embedding.detach().cpu().ravel().numpy())
         
-        # Store the output (distribution logits)
+        # Store the output (distribution parameters)
         if isinstance(out, tuple):
             dist = out[0]
-            if hasattr(dist, 'logits'):
-                buf_actor_output.append(dist.logits.detach().cpu().ravel().numpy())
-            elif hasattr(dist, 'dist') and hasattr(dist.dist, 'logits'):
-                buf_actor_output.append(dist.dist.logits.detach().cpu().ravel().numpy())
-            elif hasattr(dist, 'loc'):
-                buf_actor_output.append(dist.loc.detach().cpu().ravel().numpy())
-            else:
-                buf_actor_output.append(dist.dist.loc.detach().cpu().ravel().numpy())
+            try:
+                if hasattr(dist, 'loc') and hasattr(dist, 'scale'):
+                    # For Normal distribution: capture (μ, log σ)
+                    mu = dist.loc
+                    log_sigma = torch.log(dist.scale)
+                    dist_params = torch.cat([mu, log_sigma], dim=-1)
+                    buf_actor_output.append(dist_params.detach().cpu().ravel().numpy())
+                elif hasattr(dist, 'logits'):
+                    # For discrete distributions
+                    buf_actor_output.append(dist.logits.detach().cpu().ravel().numpy())
+                elif hasattr(dist, 'dist') and hasattr(dist.dist, 'loc'):
+                    # For wrapped distributions
+                    mu = dist.dist.loc
+                    log_sigma = torch.log(dist.dist.scale)
+                    dist_params = torch.cat([mu, log_sigma], dim=-1)
+                    buf_actor_output.append(dist_params.detach().cpu().ravel().numpy())
+                else:
+                    # Fallback: try to extract action parameters
+                    buf_actor_output.append(dist.detach().cpu().ravel().numpy())
+            except Exception as e:
+                # If all else fails, just capture the action
+                print(f"Warning: Could not extract distribution parameters: {e}")
+                buf_actor_output.append(np.zeros(4))  # 2D action + 2D log_std
         else:
             buf_actor_output.append(out.detach().cpu().ravel().numpy())
         
@@ -542,13 +1116,22 @@ def main():
         
         # 2. store labels **here** so lengths always match
         if current_env is not None and current_obs is not None and current_action is not None and current_agent is not None:
+            # Debug: check action values (commented out for cleaner output)
+            # if not hasattr(fusion_hook, 'debug_count'):
+            #     fusion_hook.debug_count = 0
+            # fusion_hook.debug_count += 1
+            # if fusion_hook.debug_count <= 5:
+            #     print(f"DEBUG: current_action type: {type(current_action)}, value: {current_action}")
+            
             if args.all:
-                # Collect all targets
+                # Collect all targets using post-step state
                 for target_name in ALL_TARGETS:
-                    buf_lbl_dict[target_name].append(get_actor_target(current_env, current_obs, current_action, current_agent, target_name))
+                    label = get_actor_target_with_state(current_env, current_obs, current_action, current_agent, target_name, current_pre_state, current_post_state)
+                    buf_lbl_dict[target_name].append(label)
             else:
                 # Collect single target
-                buf_lbl_single.append(get_actor_target(current_env, current_obs, current_action, current_agent, args.target))
+                label = get_actor_target_with_state(current_env, current_obs, current_action, current_agent, args.target, current_pre_state, current_post_state)
+                buf_lbl_single.append(label)
 
     # Hook the compute_embedding method to capture the input
     original_compute_embedding = model.compute_embedding
@@ -567,10 +1150,19 @@ def main():
 
     # Roll-out data with varied goals
     print("🔄 Collecting data with varied goals...")
+    
+    # Progress bar for data collection
+    total_rollouts = N_WORLDS * N_ROLLOUT
+    pbar = trange(total_rollouts, desc="Collecting data", unit="rollout")
+    
     for wid in range(N_WORLDS):
         for rid in range(N_ROLLOUT):
             ltl_goal = GOALS[(wid * N_ROLLOUT + rid) % len(GOALS)]
             env = make_env(ENV, FixedSampler.partial(ltl_goal), sequence=False)
+            
+            # Reset buffer state to prevent cross-rollout contamination
+            reset_buffer_state()
+            
             props = set(env.get_propositions())
             planner = ExhaustiveSearch(model, props, num_loops=2)
             agent = Agent(model, planner, propositions=props, verbose=False)
@@ -582,15 +1174,14 @@ def main():
                 current_env = env
                 current_obs = obs
                 current_wid = wid
+                
+                # Collect pre-step state
+                pre_state = {}
+                pre_state['pos'] = env.agent_pos[:2].copy()
+                pre_state['vel'] = getattr(env, 'agent_vel', np.zeros(2))
+                
                 # Set flag to collect activation for this step
                 collect_this_step = True
-                
-                # Store current position for delta_xy calculation
-                if hasattr(env, 'agent_pos'):
-                    current_pos = env.agent_pos[:2].copy()
-                    if last_pos is not None:
-                        env.last_pos = last_pos  # Store for delta_xy calculation
-                    last_pos = current_pos
                 
                 # Store position for k-step pose prediction
                 pos_buffer.append(env.agent_pos[:2].copy())
@@ -601,29 +1192,31 @@ def main():
                 current_action = action
                 current_agent = agent
                 
-                # Store logits and value in agent for later access
-                # This needs to be done after the model forward pass
-                if hasattr(agent, 'last_logits'):
-                    agent.last_logits = agent.last_logits
-                if hasattr(agent, 'last_value'):
-                    agent.last_value = agent.last_value
-                
                 # Ensure action is in the correct format for the environment
-                # The action should be an integer for discrete actions or an array for continuous
                 if isinstance(action, np.ndarray):
                     if action.size == 1:
                         action = int(action.item())
                     else:
-                        # For continuous actions, flatten the array but keep as numpy array
                         action = action.flatten()
                 elif isinstance(action, torch.Tensor):
                     action = int(action.item())
                 elif isinstance(action, (int, float)):
                     action = int(action)
                 else:
-                    # Fallback: try to convert to int
                     action = int(action)
+                
+                # Step the environment
                 obs, _, done, _ = env.step(action)
+                
+                # Collect post-step state
+                post_state = {}
+                post_state['pos'] = env.agent_pos[:2].copy()
+                post_state['vel'] = getattr(env, 'agent_vel', np.zeros(2))
+                
+                # Store post-step state for label generation
+                current_post_state = post_state
+                current_pre_state = pre_state
+                
                 step += 1
             env.close()
 
@@ -655,7 +1248,13 @@ def main():
             # Clear buffers for next rollout
             pos_buffer = []
             embed_buffer = []
+            
+            # Update progress bar
+            pbar.update(1)
 
+    # Close progress bar
+    pbar.close()
+    
     # Align data
     X_actor_input = np.vstack(buf_actor_input)
     X_actor_output = np.vstack(buf_actor_output)
@@ -681,7 +1280,7 @@ def main():
 
     # Split data using held-out worlds for better generalization
     # Use last 2 worlds for testing (out of 10 total)
-    held_out_worlds = [8, 9]  # Last 2 worlds for testing
+    held_out_worlds = [3,7]  # Hold out world 7 for testing (with larger dataset)
     
     # Use recorded world_ids from post_hook
     # world_ids = np.array(world_ids) # This line is now redundant as world_ids is already numpy
@@ -702,6 +1301,9 @@ def main():
     print("=" * 80)
     
     results = []
+    
+    # Progress bar for probing
+    probe_pbar = trange(len(targets_to_probe), desc="Probing targets", unit="target")
     
     for target_name in targets_to_probe:
         print(f"\n🔍 Probing: {target_name}")
@@ -800,6 +1402,12 @@ def main():
         except Exception as e:
             print(f"  ❌ Error probing {target_name}: {e}")
             continue
+        
+        # Update progress bar
+        probe_pbar.update(1)
+    
+    # Close progress bar
+    probe_pbar.close()
     
     # Print summary table
     if results:

@@ -71,6 +71,47 @@ class LDBAWrapper(gymnasium.Wrapper):
         obs['ldba'] = self.ldba
         obs['ldba_state'] = self.ldba_state
         obs['propositions'] = info['propositions']
+    
+    def set_goal(self, formula: str, *, reset_ldba_state: bool = True, reset_visit_counter: bool = True) -> None:
+        """
+        Switch the LDBA to a new goal *without* resetting the underlying physics env.
+
+        - Rebuilds the LDBA for `formula`
+        - Resets the LDBA state to its initial state (configurable)
+        - Optionally clears the accepting-visit counter
+        - Updates the observation view so planners immediately see the new LDBA
+
+        Note: we leave the underlying env state intact. On the next `step`, the LDBA
+        will advance based on the current propositions of the ongoing world.
+        """
+        # Rebuild LDBA for the new goal
+        self.ldba = self.construct_ldba(formula)
+        self.terminate_on_acceptance = self.ldba.is_finite_specification()
+
+        if reset_ldba_state or (self.ldba_state is None):
+            self.ldba_state = self.ldba.initial_state
+
+        if reset_visit_counter:
+            self.num_accepting_visits = 0
+
+        # Update the observation view with the new goal text (if we have one cached)
+        if self.obs is not None and isinstance(self.obs, dict):
+            try:
+                self.obs['goal'] = formula
+            except Exception:
+                pass
+
+        # Refresh the LDBA-related fields in the observation and mark change
+        if self.obs is not None:
+            # Ensure we have an info dict to complete observation with propositions
+            info = self.info if isinstance(self.info, dict) else {}
+            self.complete_observation(self.obs, info)
+            if isinstance(info, dict):
+                info['ldba_state_changed'] = True
+                # conservative reset for acceptance flag; next step will recompute
+                info['accepting'] = False
+                info['num_accepting_visits'] = self.num_accepting_visits
+
 
     @functools.cache
     def construct_ldba(self, formula: str) -> LDBA:

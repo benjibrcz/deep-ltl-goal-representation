@@ -1,0 +1,4 @@
+env_id,exp,seed,colors,depth,N,predicted_mean,empirical_mean,MAE,pre_steps,per_step_budget,num_loops,deterministic,stateful
+PointLtl2-v0,big_test,0,"green,blue,yellow,magenta",1,60,0.8461926961926961,0.0,0.8461926961926961,200,200,2,1,1
+PointLtl2-v0,big_test,0,"green,blue,yellow,magenta",2,60,0.7454625146932838,0.0,0.7454625146932838,200,200,2,1,1
+PointLtl2-v0,big_test,0,"green,blue,yellow,magenta",3,60,0.6469354352804237,0.0,0.6469354352804237,200,200,2,1,1

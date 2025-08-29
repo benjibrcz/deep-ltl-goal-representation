@@ -1,0 +1,2 @@
+target,hidden_score,input_score,variance_explained,metric,shape,train_samples,test_samples
+step_number,-31.49246597290039,-2.6250550746917725,-28.867410898208618,R²,1,30,30
