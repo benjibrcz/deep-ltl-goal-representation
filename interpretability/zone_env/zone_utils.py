@@ -1,4 +1,4 @@
-# interpretability/working_scripts/zone_utils.py
+# interpretability/zone_env/zone_utils.py
 from __future__ import annotations
 import json
 from pathlib import Path
