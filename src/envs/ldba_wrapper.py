@@ -27,11 +27,22 @@ class LDBAWrapper(gymnasium.Wrapper):
         self.info = None
 
     def step(self, action: WrapperActType) -> tuple[WrapperObsType, SupportsFloat, bool, bool, dict[str, Any]]:
-        if (action == LDBASequence.EPSILON).all():
+        # Support both array-like and scalar actions when checking for EPSILON
+        eq_eps = (action == LDBASequence.EPSILON)
+        try:
+            is_all_eps = eq_eps.all()
+        except AttributeError:
+            # Scalar bool
+            is_all_eps = bool(eq_eps)
+        if is_all_eps:
             obs, reward, terminated, truncated, info = self.obs, 0.0, False, False, self.info
             take_epsilon = True
         else:
-            assert not (action == LDBASequence.EPSILON).any()
+            try:
+                assert not (eq_eps.any())
+            except AttributeError:
+                # Scalar path: already known to be False
+                pass
             obs, reward, terminated, truncated, info = super().step(action)
             take_epsilon = False
             self.obs = obs

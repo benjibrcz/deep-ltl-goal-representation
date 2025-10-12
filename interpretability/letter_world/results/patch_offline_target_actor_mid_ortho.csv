@@ -1,0 +1,5 @@
+feature,mode,alpha,dce,flip_rate,targeted_flip_rate,tag_on_letter,tag_cell_type
+actor_mid,steer,0.0,1.519947454009518e-08,0.0,0.0,present,present
+actor_mid,steer,0.25,12.265494754402006,0.5812574139976275,0.2858837485172005,present,present
+actor_mid,steer,0.5,22.097191544160665,0.8125741399762753,0.3262158956109134,present,present
+actor_mid,steer,1.0,28.065537686738203,0.8481613285883749,0.3262158956109134,present,present

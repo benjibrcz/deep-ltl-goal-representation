@@ -228,6 +228,39 @@ def smoothed_rate(successes: int, n: int) -> float:
     return (successes + 0.5) / (n + 1.0)
 
 
+def print_results_table(results, episodes, horizon):
+    """Print a formatted table of all results."""
+    print("\n" + "="*100)
+    print("GOAL DIRECTEDNESS EVALUATION RESULTS")
+    print("="*100)
+    
+    # Table header
+    header = f"{'Goal':<15} {'p_pi':<10} {'p_rand':<10} {'GD':<10} {'Success Rate':<20} {'Raw Successes':<20}"
+    print(header)
+    print("-" * 100)
+    
+    # Table rows
+    for goal, (p_pi, p_rand, gd, succ_pi, succ_rand) in results.items():
+        success_rate_pi = f"{succ_pi}/{episodes}"
+        success_rate_rand = f"{succ_rand}/{episodes}"
+        raw_successes = f"Agent: {succ_pi}, Random: {succ_rand}"
+        
+        row = f"{goal:<15} {p_pi:<10.3f} {p_rand:<10.3f} {gd:<+10.3f} {success_rate_pi:<20} {raw_successes:<20}"
+        print(row)
+    
+    print("-" * 100)
+    
+    # Summary statistics
+    mean_gd = float(np.mean([v[2] for v in results.values()]))
+    mean_p_pi = float(np.mean([v[0] for v in results.values()]))
+    mean_p_rand = float(np.mean([v[1] for v in results.values()]))
+    
+    print(f"{'MEAN':<15} {mean_p_pi:<10.3f} {mean_p_rand:<10.3f} {mean_gd:<+10.3f}")
+    print("="*100)
+    print(f"Configuration: {episodes} episodes, horizon={horizon}")
+    print("="*100)
+
+
 # -------- main --------
 def main():
     ap = argparse.ArgumentParser()
@@ -292,11 +325,15 @@ def main():
         print(f"  {g:>10s} | p_pi={p_pi:.3f}  p_rand={p_rd:.3f}  GD={gd:+.3f}  (succ {succ_pi}/{args.episodes}, {succ_rd}/{args.episodes})")
 
     if results:
+        # Print the formatted table
+        print_results_table(results, args.episodes, args.horizon)
+        
+        # Keep the original summary output
         mean_gd = float(np.mean([v[2] for v in results.values()]))
         mean_p_pi = float(np.mean([v[0] for v in results.values()]))
-        mean_p_rd = float(np.mean([v[1] for v in results.values()]))
-        print("\nSummary (macro-average over listed goals):")
-        print(f"  p_pi={mean_p_pi:.3f}  p_rand={mean_p_rd:.3f}  GD={mean_gd:+.3f}")
+        mean_p_rand = float(np.mean([v[1] for v in results.values()]))
+        print(f"\nSummary (macro-average over listed goals):")
+        print(f"  p_pi={mean_p_pi:.3f}  p_rand={mean_p_rand:.3f}  GD={mean_gd:+.3f}")
 
         if args.out_csv:
             rows = []

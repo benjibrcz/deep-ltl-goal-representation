@@ -12,3 +12,12 @@ multiple_results/
 *.fish
 paper_utils
 ldba.png
+
+# OS cruft
+.DS_Store
+
+# Heavy experiment artifacts (keep code/results summaries, skip bulky blobs)
+interpretability/working_scripts/**/*.npz
+interpretability/working_scripts/**/*.parquet
+interpretability/working_scripts/**/*.jsonl.gz
+interpretability/working_scripts/**/*.log

@@ -315,16 +315,47 @@ def set_all_seeds(seed: int) -> None:
     random.seed(seed); np.random.seed(seed); torch.manual_seed(seed)
 
 def group_split_by_world(world_ids: np.ndarray, held_out: Optional[List[int]], frac: float, seed: int) -> Tuple[np.ndarray, np.ndarray]:
-    """Return boolean masks (train_mask, test_mask), holding out entire worlds."""
+    """Return boolean masks (train_mask, test_mask), holding out entire worlds.
+
+    If only a single world is present, fall back to a within-world random split
+    to avoid empty train/test sets which can crash downstream scalers/models.
+    """
     uniq = np.unique(world_ids).tolist()
     if held_out is None:
         rng = np.random.default_rng(seed)
-        k = max(1, int(round(len(uniq) * frac)))
-        held = set(rng.choice(uniq, size=k, replace=False).tolist())
+        if len(uniq) >= 2:
+            k = max(1, int(round(len(uniq) * frac)))
+            held_worlds = set(rng.choice(uniq, size=k, replace=False).tolist())
+            test_mask = np.isin(world_ids, list(held_worlds))
+            train_mask = ~test_mask
+        else:
+            # Within-world split: pick indices for test, ensure both sides non-empty
+            n = len(world_ids)
+            k = min(max(1, int(round(n * frac))), n - 1) if n > 1 else 0
+            idx = np.arange(n)
+            rng.shuffle(idx)
+            test_idx = set(idx[:k].tolist())
+            test_mask = np.zeros(n, dtype=bool)
+            if k > 0:
+                test_mask[list(test_idx)] = True
+            train_mask = ~test_mask
     else:
-        held = set(held_out)
-    test_mask = np.isin(world_ids, list(held))
-    return ~test_mask, test_mask
+        held_worlds = set(held_out)
+        test_mask = np.isin(world_ids, list(held_worlds))
+        train_mask = ~test_mask
+        # If user-held worlds consume everything (e.g., only 1 world total), fall back to within-world split
+        if not train_mask.any() or not test_mask.any():
+            n = len(world_ids)
+            rng = np.random.default_rng(seed)
+            k = min(max(1, int(round(n * frac))), max(1, n - 1)) if n > 1 else 0
+            idx = np.arange(n)
+            rng.shuffle(idx)
+            test_mask = np.zeros(n, dtype=bool)
+            if k > 0:
+                test_mask[idx[:k]] = True
+            train_mask = ~test_mask
+
+    return train_mask, test_mask
 
 def as_features(obs) -> np.ndarray:
     """Return the 80-D feature vector, whether obs is a dict or ndarray."""
@@ -736,6 +767,54 @@ def fit_probe(X_train, X_test, y_train, y_test, name: str, use_quadratic: bool =
             scores.append(1.0 - (ss_res / ss_tot) if ss_tot > 1e-12 else 0.0)
 
         return float(np.mean(scores)), "R²"
+
+    # --- MULTI-DIM CLASSIFICATION (treat columns independently, average Acc) ---
+    if is_clf and y_train.ndim == 2 and y_train.shape[1] > 1:
+        accs: List[float] = []
+        for i in range(y_train.shape[1]):
+            ytr_i = y_train[:, i].ravel()
+            yte_i = y_test[:, i].ravel()
+            classes = np.unique(ytr_i)
+            if classes.size < 2:
+                # fallback: majority baseline on train applied to test
+                if yte_i.size:
+                    maj = classes[0]
+                    accs.append(float(np.mean(yte_i == maj)))
+                else:
+                    accs.append(float("nan"))
+                continue
+            if probe_type == "mlp":
+                clf = make_pipeline(
+                    StandardScaler(),
+                    MLPClassifier(
+                        hidden_layer_sizes=mlp_hidden,
+                        activation="relu",
+                        alpha=mlp_alpha,
+                        random_state=seed,
+                        max_iter=mlp_max_iter,
+                        early_stopping=True,
+                        n_iter_no_change=10,
+                        verbose=False
+                    )
+                )
+            else:
+                if use_quadratic:
+                    clf = make_pipeline(
+                        StandardScaler(),
+                        PolynomialFeatures(degree=2, include_bias=False),
+                        LogisticRegression(max_iter=1000, class_weight="balanced"),
+                    )
+                else:
+                    clf = make_pipeline(
+                        StandardScaler(),
+                        LogisticRegression(max_iter=1000, class_weight="balanced")
+                    )
+            clf.fit(X_train, ytr_i)
+            y_hat_i = clf.predict(X_test)
+            accs.append(accuracy_score(yte_i, y_hat_i))
+        # mean over columns, ignore nans if any
+        accs = [a for a in accs if np.isfinite(a)] or [float("nan")]
+        return float(np.mean(accs)), "Acc"
 
     # --- 1-D TARGETS ---
     ytr = y_train.ravel()

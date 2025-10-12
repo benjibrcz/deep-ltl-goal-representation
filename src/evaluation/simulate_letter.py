@@ -12,14 +12,14 @@ from ltl.samplers.fixed_sampler import FixedSampler
 from model.model import build_model
 from model.agent import Agent
 from config import model_configs
-from sequence.search import BFS, DijkstraSearch, ExhaustiveSearch
+from sequence.search import BFS, ExhaustiveSearch
 from utils.model_store import ModelStore
 
 env_name = 'LetterEnv-v0'
-exp = 'deepltl'
+exp = 'test'
 seed = 1
 render_modes = [None, 'human', 'path']
-render = render_modes[1]
+render = render_modes[2]
 render_on_fail = False
 
 random.seed(seed)
@@ -52,7 +52,7 @@ props = set(env.get_propositions())
 search = ExhaustiveSearch(model, props, num_loops=2)
 agent = Agent(model, search=search, propositions=props, verbose=render is not None)
 
-num_episodes = 500
+num_episodes = 10
 
 num_successes = 0
 num_violations = 0

@@ -1,4 +1,5 @@
 import random
+import time
 
 import numpy as np
 import torch
@@ -73,6 +74,9 @@ def simulate(env, gamma, exp, seed, num_episodes, formula, finite, render, deter
             if action.shape == (1,):
                 action = action[0]
             obs, reward, done, info = env.step(action)
+            if render:
+                # slow down rendering a bit so the window doesn't flash by
+                time.sleep(0.05)
             num_steps += 1
             if done:
                 if finite:
@@ -96,6 +100,18 @@ def simulate(env, gamma, exp, seed, num_episodes, formula, finite, render, deter
                         pbar.set_postfix({
                             'A': num_accepting_visits / (i + 1),
                         })
+        # Keep the window open between episodes when rendering
+        if render:
+            try:
+                # Prefer env-provided pause if available (e.g., LetterEnv)
+                if hasattr(env, 'wait_for_input'):
+                    finish = env.wait_for_input()
+                    if finish:
+                        break
+                else:
+                    _ = input("Press Enter to continue (or Ctrl-C to quit)... ")
+            except KeyboardInterrupt:
+                break
 
     env.close()
     if finite:

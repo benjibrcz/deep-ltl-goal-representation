@@ -607,6 +607,7 @@ def main():
     npz_actor_h5 = []  # hook_actor_h5 (penultimate before action head)
     npz_next_pos = []  # next_positives (one-hot over props)
     npz_vec_next = []  # vec_to_next_pos (agent -> target color zone center, NaNs if unknown)
+    npz_vec_curr = []  # vec_to_goal_t (current-step agent -> target color center)
     npz_ap       = []  # AP(s_t) one-hot
     npz_next_ap  = []  # AP(s_{t+1}) one-hot
     npz_critic   = []  # critic value estimate
@@ -677,9 +678,11 @@ def main():
                 next_obs_flat = flatten_features(obs_next)
                 next_ap_vec   = ap_vec_from_info(info_next if isinstance(info_next, dict) else {}, prop_index)
 
-                # vec to current target zone center using environment's zone_positions
-                agent_xy   = extract_xy(env=env, obs=obs_next, info=info_next)
-                vec_next   = vector_to_goal_from_env(current_goal_color, agent_xy, env)
+                # vec to target zone center for current (pre-step) and next (post-step)
+                agent_xy_curr = extract_xy(env=env, obs=obs, info=info)
+                agent_xy_next = extract_xy(env=env, obs=obs_next, info=info_next)
+                vec_curr = vector_to_goal_from_env(current_goal_color, agent_xy_curr, env)
+                vec_next = vector_to_goal_from_env(current_goal_color, agent_xy_next, env)
 
                 # next-positives one-hot for FG <color>
                 next_pos_oh = color_next_positives(f"FG {current_goal_color}", prop_index)
@@ -700,6 +703,7 @@ def main():
                     npz_actor_h5.append(h_act.astype(np.float32))
                     npz_next_pos.append(next_pos_oh.astype(np.float32))
                     npz_vec_next.append(vec_next.astype(np.float32))
+                    npz_vec_curr.append(vec_curr.astype(np.float32))
                     npz_ap.append(prev_ap_vec.astype(np.float32))
                     npz_next_ap.append(next_ap_vec.astype(np.float32))
                     
@@ -741,8 +745,8 @@ def main():
                     "actor_penult": None if last_actor["penult"] is None else last_actor["penult"].tolist(),
                     "a": np.asarray(act).ravel().tolist(),
                     "obs_features": to_list_or_none(prev_obs_flat),
-                    "pos_x": agent_xy[0],
-                    "pos_y": agent_xy[1],
+                    "pos_x": agent_xy_next[0],
+                    "pos_y": agent_xy_next[1],
                     "success_step": bool(saw_prop(info_next, current_goal_color)),
                     "propositions": props_str(info_next),
                     "accepting": bool(info_next.get("accepting", False)),
@@ -795,8 +799,10 @@ def main():
                     next_obs_flat = flatten_features(obs_next)
                     next_ap_vec   = ap_vec_from_info(info_next if isinstance(info_next, dict) else {}, prop_index)
 
-                    agent_xy   = extract_xy(env=env, obs=obs_next, info=info_next)
-                    vec_next   = vector_to_goal_from_env(current_goal_color, agent_xy, env)
+                    agent_xy_curr = extract_xy(env=env, obs=obs, info=info)
+                    agent_xy_next = extract_xy(env=env, obs=obs_next, info=info_next)
+                    vec_curr = vector_to_goal_from_env(current_goal_color, agent_xy_curr, env)
+                    vec_next = vector_to_goal_from_env(current_goal_color, agent_xy_next, env)
                     next_pos_oh = color_next_positives(f"FG {current_goal_color}", prop_index)
 
                     if (prev_obs_flat is not None and next_obs_flat is not None and
@@ -814,6 +820,7 @@ def main():
                         npz_actor_h5.append(h_act.astype(np.float32))
                         npz_next_pos.append(next_pos_oh.astype(np.float32))
                         npz_vec_next.append(vec_next.astype(np.float32))
+                        npz_vec_curr.append(vec_curr.astype(np.float32))
                         npz_ap.append(prev_ap_vec.astype(np.float32))
                         npz_next_ap.append(next_ap_vec.astype(np.float32))
                         
@@ -854,8 +861,8 @@ def main():
                         "actor_penult": None if last_actor["penult"] is None else last_actor["penult"].tolist(),
                         "a": np.asarray(act).ravel().tolist(),
                         "obs_features": to_list_or_none(prev_obs_flat),
-                        "pos_x": agent_xy[0],
-                        "pos_y": agent_xy[1],
+                        "pos_x": agent_xy_next[0],
+                        "pos_y": agent_xy_next[1],
                         "success_step": bool(saw_prop(info_next, current_goal_color)),
                         "propositions": props_str(info_next),
                         "accepting": bool(info_next.get("accepting", False)),
@@ -906,6 +913,7 @@ def main():
         A_actor_h5 = np.stack(npz_actor_h5, axis=0)
         A_next_pos = np.stack(npz_next_pos, axis=0)
         A_vec_next = np.stack(npz_vec_next, axis=0)
+        A_vec_curr = np.stack(npz_vec_curr, axis=0)
         A_ap       = np.stack(npz_ap, axis=0)
         A_next_ap  = np.stack(npz_next_ap, axis=0)
         A_critic   = np.stack(npz_critic, axis=0)
@@ -930,6 +938,7 @@ def main():
             hook_actor_h5=A_actor_h5,
             next_positives=A_next_pos,
             vec_to_next_pos=A_vec_next,
+            vec_to_goal_t=A_vec_curr,
             ap=A_ap,
             next_ap=A_next_ap,
             critic=A_critic,
