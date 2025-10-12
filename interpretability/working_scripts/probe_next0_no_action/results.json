@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "npz": "interpretability/working_scripts/test_with_next0_fixed.npz",
+    "n": 450,
+    "hooks": [
+      "hook_env_mlp1"
+    ],
+    "targets": [
+      "next0_obs"
+    ],
+    "include_action": false,
+    "split": {
+      "type": "group",
+      "group_key": true,
+      "test_size": 0.2
+    },
+    "seed": 0
+  },
+  "per_hook": {
+    "hook_env_mlp1": {
+      "next0_obs": {
+        "baseline_sensors": {
+          "r2": -330.8776143266329,
+          "mse": 4.269342235258143
+        },
+        "hook_only": {
+          "r2": -1652102097377.075,
+          "mse": 1.5674082334089021
+        }
+      }
+    }
+  }
+}

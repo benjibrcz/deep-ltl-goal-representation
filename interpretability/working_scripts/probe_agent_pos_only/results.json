@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "npz": "interpretability/working_scripts/test_next0_large.npz",
+    "n": 10000,
+    "hooks": [
+      "hook_env_mlp1",
+      "hook_ltl_rnn_h"
+    ],
+    "targets": [
+      "next0_agent_pos"
+    ],
+    "include_action": true,
+    "split": {
+      "type": "group",
+      "group_key": true,
+      "test_size": 0.2
+    },
+    "seed": 0
+  },
+  "per_hook": {
+    "hook_env_mlp1": {
+      "next0_agent_pos": {
+        "baseline_sensors": {
+          "r2": -0.00106920373952335,
+          "mse": 26.982080441936308
+        },
+        "hook_only": {
+          "r2": -0.007041654869437253,
+          "mse": 27.373468066749368
+        },
+        "hook_plus_action": {
+          "r2": -0.006137811898623113,
+          "mse": 27.37122567456857
+        },
+        "sensors_plus_action": {
+          "r2": 0.0016097844781164938,
+          "mse": 26.959639884064096
+        }
+      }
+    },
+    "hook_ltl_rnn_h": {
+      "next0_agent_pos": {
+        "baseline_sensors": {
+          "r2": -0.00106920373952335,
+          "mse": 26.982080441936308
+        },
+        "hook_only": {
+          "r2": -0.0011592990870116227,
+          "mse": 26.931217387486292
+        },
+        "hook_plus_action": {
+          "r2": 0.0009150702116321741,
+          "mse": 26.911735442637507
+        },
+        "sensors_plus_action": {
+          "r2": 0.0016097844781164938,
+          "mse": 26.959639884064096
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,482 @@
+{
+  "meta": {
+    "env": "PointLtl2-v0",
+    "exp": "big_test",
+    "episodes": 80,
+    "horizons": [
+      1,
+      5,
+      20
+    ],
+    "gamma": 0.97,
+    "features": [
+      "hand",
+      "sensors",
+      "hand+sensors",
+      "hand+action",
+      "hook:env_net.mlp",
+      "hook:ltl_net.rnn",
+      "hook:actor.enc",
+      "hook:critic.penult",
+      "hook+action:env_net.mlp",
+      "hook+action:ltl_net.rnn",
+      "hook+action:actor.enc",
+      "hook+action:critic.penult"
+    ],
+    "critic_penult_name": "prehook(input to value)"
+  },
+  "multi_horizon": {
+    "1": {
+      "hand::delta_xy": {
+        "r2": 0.26724153757095337,
+        "r2_time_shuffle": -0.4200264811515808
+      },
+      "hand::direction": {
+        "r2": 0.31845784187316895,
+        "r2_time_shuffle": -0.37637174129486084
+      },
+      "sensors::delta_xy": {
+        "r2": 0.38040420413017273,
+        "r2_time_shuffle": -0.5943093299865723
+      },
+      "sensors::direction": {
+        "r2": 0.35077551007270813,
+        "r2_time_shuffle": -0.4192708730697632
+      },
+      "hand+sensors::delta_xy": {
+        "r2": 0.378404825925827,
+        "r2_time_shuffle": -0.555355429649353
+      },
+      "hand+sensors::direction": {
+        "r2": 0.3691740930080414,
+        "r2_time_shuffle": -0.4394788146018982
+      },
+      "hand+action::delta_xy": {
+        "r2": 0.4484200179576874,
+        "r2_time_shuffle": -0.5974757671356201
+      },
+      "hand+action::direction": {
+        "r2": 0.3813401758670807,
+        "r2_time_shuffle": -0.4141044020652771
+      },
+      "hook:env_net.mlp::delta_xy": {
+        "r2": 0.34803736209869385,
+        "r2_time_shuffle": -0.5136328935623169
+      },
+      "hook:env_net.mlp::direction": {
+        "r2": 0.3374859094619751,
+        "r2_time_shuffle": -0.40729671716690063
+      },
+      "hook:ltl_net.rnn::delta_xy": {
+        "r2": 0.10405352711677551,
+        "r2_time_shuffle": -0.09899133443832397
+      },
+      "hook:ltl_net.rnn::direction": {
+        "r2": 0.05540606379508972,
+        "r2_time_shuffle": -0.06938576698303223
+      },
+      "hook:actor.enc::delta_xy": {
+        "r2": 0.2767799496650696,
+        "r2_time_shuffle": -0.423442542552948
+      },
+      "hook:actor.enc::direction": {
+        "r2": 0.19145983457565308,
+        "r2_time_shuffle": -0.29392993450164795
+      },
+      "hook:critic.penult::delta_xy": {
+        "r2": 0.11610499024391174,
+        "r2_time_shuffle": -0.18491625785827637
+      },
+      "hook:critic.penult::direction": {
+        "r2": 0.07692539691925049,
+        "r2_time_shuffle": -0.11136513948440552
+      },
+      "hook+action:env_net.mlp::delta_xy": {
+        "r2": 0.6319414377212524,
+        "r2_time_shuffle": -0.7254564762115479
+      },
+      "hook+action:env_net.mlp::direction": {
+        "r2": 0.40994369983673096,
+        "r2_time_shuffle": -0.4213317632675171
+      },
+      "hook+action:ltl_net.rnn::delta_xy": {
+        "r2": 0.10009291768074036,
+        "r2_time_shuffle": -0.26374852657318115
+      },
+      "hook+action:ltl_net.rnn::direction": {
+        "r2": 0.047263890504837036,
+        "r2_time_shuffle": -0.087138831615448
+      },
+      "hook+action:actor.enc::delta_xy": {
+        "r2": 0.3719887435436249,
+        "r2_time_shuffle": -0.48259347677230835
+      },
+      "hook+action:actor.enc::direction": {
+        "r2": 0.2058485448360443,
+        "r2_time_shuffle": -0.28489112854003906
+      },
+      "hook+action:critic.penult::delta_xy": {
+        "r2": 0.1921437382698059,
+        "r2_time_shuffle": -0.3204021453857422
+      },
+      "hook+action:critic.penult::direction": {
+        "r2": 0.07518336176872253,
+        "r2_time_shuffle": -0.12152606248855591
+      }
+    },
+    "5": {
+      "hand::delta_xy": {
+        "r2": 0.3345105051994324,
+        "r2_time_shuffle": -0.3943987488746643
+      },
+      "hand::direction": {
+        "r2": 0.34033453464508057,
+        "r2_time_shuffle": -0.36555057764053345
+      },
+      "sensors::delta_xy": {
+        "r2": 0.43462589383125305,
+        "r2_time_shuffle": -0.5511267781257629
+      },
+      "sensors::direction": {
+        "r2": 0.35634028911590576,
+        "r2_time_shuffle": -0.3584255576133728
+      },
+      "hand+sensors::delta_xy": {
+        "r2": 0.43431031703948975,
+        "r2_time_shuffle": -0.495322585105896
+      },
+      "hand+sensors::direction": {
+        "r2": 0.373903751373291,
+        "r2_time_shuffle": -0.39642882347106934
+      },
+      "hand+action::delta_xy": {
+        "r2": 0.34027737379074097,
+        "r2_time_shuffle": -0.38139528036117554
+      },
+      "hand+action::direction": {
+        "r2": 0.3442920446395874,
+        "r2_time_shuffle": -0.3653310537338257
+      },
+      "hook:env_net.mlp::delta_xy": {
+        "r2": 0.40520161390304565,
+        "r2_time_shuffle": -0.4959690570831299
+      },
+      "hook:env_net.mlp::direction": {
+        "r2": 0.3410143554210663,
+        "r2_time_shuffle": -0.3379286527633667
+      },
+      "hook:ltl_net.rnn::delta_xy": {
+        "r2": 0.04861032962799072,
+        "r2_time_shuffle": -0.05504024028778076
+      },
+      "hook:ltl_net.rnn::direction": {
+        "r2": 0.030901432037353516,
+        "r2_time_shuffle": -0.051702141761779785
+      },
+      "hook:actor.enc::delta_xy": {
+        "r2": 0.1914656162261963,
+        "r2_time_shuffle": -0.2588905692100525
+      },
+      "hook:actor.enc::direction": {
+        "r2": 0.17001426219940186,
+        "r2_time_shuffle": -0.21108919382095337
+      },
+      "hook:critic.penult::delta_xy": {
+        "r2": 0.07712844014167786,
+        "r2_time_shuffle": -0.10448634624481201
+      },
+      "hook:critic.penult::direction": {
+        "r2": 0.06732439994812012,
+        "r2_time_shuffle": -0.09704816341400146
+      },
+      "hook+action:env_net.mlp::delta_xy": {
+        "r2": 0.4104714095592499,
+        "r2_time_shuffle": -0.4637538194656372
+      },
+      "hook+action:env_net.mlp::direction": {
+        "r2": 0.34260743856430054,
+        "r2_time_shuffle": -0.3416818380355835
+      },
+      "hook+action:ltl_net.rnn::delta_xy": {
+        "r2": 0.05335646867752075,
+        "r2_time_shuffle": -0.05852031707763672
+      },
+      "hook+action:ltl_net.rnn::direction": {
+        "r2": 0.0672888457775116,
+        "r2_time_shuffle": -0.06117171049118042
+      },
+      "hook+action:actor.enc::delta_xy": {
+        "r2": 0.19529905915260315,
+        "r2_time_shuffle": -0.27254408597946167
+      },
+      "hook+action:actor.enc::direction": {
+        "r2": 0.17821624875068665,
+        "r2_time_shuffle": -0.2473185658454895
+      },
+      "hook+action:critic.penult::delta_xy": {
+        "r2": 0.07845214009284973,
+        "r2_time_shuffle": -0.1258096694946289
+      },
+      "hook+action:critic.penult::direction": {
+        "r2": 0.09336355328559875,
+        "r2_time_shuffle": -0.1149977445602417
+      }
+    },
+    "20": {
+      "hand::delta_xy": {
+        "r2": 0.38598838448524475,
+        "r2_time_shuffle": -0.42401885986328125
+      },
+      "hand::direction": {
+        "r2": 0.35611531138420105,
+        "r2_time_shuffle": -0.3567982316017151
+      },
+      "sensors::delta_xy": {
+        "r2": 0.48454517126083374,
+        "r2_time_shuffle": -0.5808725953102112
+      },
+      "sensors::direction": {
+        "r2": 0.3706847131252289,
+        "r2_time_shuffle": -0.3732048273086548
+      },
+      "hand+sensors::delta_xy": {
+        "r2": 0.48221901059150696,
+        "r2_time_shuffle": -0.5747891664505005
+      },
+      "hand+sensors::direction": {
+        "r2": 0.3867221176624298,
+        "r2_time_shuffle": -0.4071304202079773
+      },
+      "hand+action::delta_xy": {
+        "r2": 0.390557199716568,
+        "r2_time_shuffle": -0.3993799090385437
+      },
+      "hand+action::direction": {
+        "r2": 0.3648700416088104,
+        "r2_time_shuffle": -0.37106627225875854
+      },
+      "hook:env_net.mlp::delta_xy": {
+        "r2": 0.47149452567100525,
+        "r2_time_shuffle": -0.5032451748847961
+      },
+      "hook:env_net.mlp::direction": {
+        "r2": 0.3649821877479553,
+        "r2_time_shuffle": -0.3578341603279114
+      },
+      "hook:ltl_net.rnn::delta_xy": {
+        "r2": 0.03307527303695679,
+        "r2_time_shuffle": -0.05754894018173218
+      },
+      "hook:ltl_net.rnn::direction": {
+        "r2": 0.02164304256439209,
+        "r2_time_shuffle": -0.04443049430847168
+      },
+      "hook:actor.enc::delta_xy": {
+        "r2": 0.24282467365264893,
+        "r2_time_shuffle": -0.29931795597076416
+      },
+      "hook:actor.enc::direction": {
+        "r2": 0.19500577449798584,
+        "r2_time_shuffle": -0.23557013273239136
+      },
+      "hook:critic.penult::delta_xy": {
+        "r2": 0.11209139227867126,
+        "r2_time_shuffle": -0.12051939964294434
+      },
+      "hook:critic.penult::direction": {
+        "r2": 0.08613201975822449,
+        "r2_time_shuffle": -0.10389721393585205
+      },
+      "hook+action:env_net.mlp::delta_xy": {
+        "r2": 0.4704391658306122,
+        "r2_time_shuffle": -0.5054600834846497
+      },
+      "hook+action:env_net.mlp::direction": {
+        "r2": 0.3668345808982849,
+        "r2_time_shuffle": -0.383450448513031
+      },
+      "hook+action:ltl_net.rnn::delta_xy": {
+        "r2": 0.09414905309677124,
+        "r2_time_shuffle": -0.07673823833465576
+      },
+      "hook+action:ltl_net.rnn::direction": {
+        "r2": 0.08749616146087646,
+        "r2_time_shuffle": -0.07286876440048218
+      },
+      "hook+action:actor.enc::delta_xy": {
+        "r2": 0.24493351578712463,
+        "r2_time_shuffle": -0.3226533532142639
+      },
+      "hook+action:actor.enc::direction": {
+        "r2": 0.20176076889038086,
+        "r2_time_shuffle": -0.25940096378326416
+      },
+      "hook+action:critic.penult::delta_xy": {
+        "r2": 0.13988229632377625,
+        "r2_time_shuffle": -0.1570250391960144
+      },
+      "hook+action:critic.penult::direction": {
+        "r2": 0.11963582038879395,
+        "r2_time_shuffle": -0.12637275457382202
+      }
+    }
+  },
+  "successor": {
+    "goal_only_k=1": {
+      "hand": {
+        "r2": -1.367262363433838,
+        "r2_time_shuffle": -2.1662228107452393
+      },
+      "sensors": {
+        "r2": -1.4335814714431763,
+        "r2_time_shuffle": -1.9953699111938477
+      },
+      "hand+sensors": {
+        "r2": -1.2870057821273804,
+        "r2_time_shuffle": -2.158900499343872
+      },
+      "hand+action": {
+        "r2": -1.3255624771118164,
+        "r2_time_shuffle": -2.286595106124878
+      },
+      "hook:env_net.mlp": {
+        "r2": -1.4335886240005493,
+        "r2_time_shuffle": -1.9909154176712036
+      },
+      "hook:ltl_net.rnn": {
+        "r2": -1.774086594581604,
+        "r2_time_shuffle": -1.8078184127807617
+      },
+      "hook:actor.enc": {
+        "r2": -1.5673867464065552,
+        "r2_time_shuffle": -2.035209894180298
+      },
+      "hook:critic.penult": {
+        "r2": -1.6933070421218872,
+        "r2_time_shuffle": -1.9143658876419067
+      },
+      "hook+action:env_net.mlp": {
+        "r2": -1.3657838106155396,
+        "r2_time_shuffle": -2.0812699794769287
+      },
+      "hook+action:ltl_net.rnn": {
+        "r2": -1.6567178964614868,
+        "r2_time_shuffle": -1.976393699645996
+      },
+      "hook+action:actor.enc": {
+        "r2": -1.5234647989273071,
+        "r2_time_shuffle": -2.065829038619995
+      },
+      "hook+action:critic.penult": {
+        "r2": -1.6049323081970215,
+        "r2_time_shuffle": -1.9909194707870483
+      }
+    },
+    "goal_only_k=5": {
+      "hand": {
+        "r2": -2.399977922439575,
+        "r2_time_shuffle": -2.8602850437164307
+      },
+      "sensors": {
+        "r2": -2.346832036972046,
+        "r2_time_shuffle": -2.741093873977661
+      },
+      "hand+sensors": {
+        "r2": -2.237699508666992,
+        "r2_time_shuffle": -2.813900947570801
+      },
+      "hand+action": {
+        "r2": -2.3712050914764404,
+        "r2_time_shuffle": -2.983750581741333
+      },
+      "hook:env_net.mlp": {
+        "r2": -2.3795835971832275,
+        "r2_time_shuffle": -2.785825729370117
+      },
+      "hook:ltl_net.rnn": {
+        "r2": -2.613347053527832,
+        "r2_time_shuffle": -2.6681087017059326
+      },
+      "hook:actor.enc": {
+        "r2": -2.480196475982666,
+        "r2_time_shuffle": -2.8923723697662354
+      },
+      "hook:critic.penult": {
+        "r2": -2.548785924911499,
+        "r2_time_shuffle": -2.799384832382202
+      },
+      "hook+action:env_net.mlp": {
+        "r2": -2.3297464847564697,
+        "r2_time_shuffle": -2.8160574436187744
+      },
+      "hook+action:ltl_net.rnn": {
+        "r2": -2.5278196334838867,
+        "r2_time_shuffle": -2.828298568725586
+      },
+      "hook+action:actor.enc": {
+        "r2": -2.4561498165130615,
+        "r2_time_shuffle": -2.895460844039917
+      },
+      "hook+action:critic.penult": {
+        "r2": -2.4901368618011475,
+        "r2_time_shuffle": -2.8486440181732178
+      }
+    },
+    "goal_only_k=20": {
+      "hand": {
+        "r2": -3.548494338989258,
+        "r2_time_shuffle": -3.808420419692993
+      },
+      "sensors": {
+        "r2": -3.4337751865386963,
+        "r2_time_shuffle": -3.72505784034729
+      },
+      "hand+sensors": {
+        "r2": -3.3388631343841553,
+        "r2_time_shuffle": -3.709059476852417
+      },
+      "hand+action": {
+        "r2": -3.557906150817871,
+        "r2_time_shuffle": -3.9106979370117188
+      },
+      "hook:env_net.mlp": {
+        "r2": -3.4532711505889893,
+        "r2_time_shuffle": -3.7492570877075195
+      },
+      "hook:ltl_net.rnn": {
+        "r2": -3.6264851093292236,
+        "r2_time_shuffle": -3.7134673595428467
+      },
+      "hook:actor.enc": {
+        "r2": -3.5864009857177734,
+        "r2_time_shuffle": -3.886573076248169
+      },
+      "hook:critic.penult": {
+        "r2": -3.5390872955322266,
+        "r2_time_shuffle": -3.7858712673187256
+      },
+      "hook+action:env_net.mlp": {
+        "r2": -3.4268105030059814,
+        "r2_time_shuffle": -3.793449640274048
+      },
+      "hook+action:ltl_net.rnn": {
+        "r2": -3.6091554164886475,
+        "r2_time_shuffle": -3.8101494312286377
+      },
+      "hook+action:actor.enc": {
+        "r2": -3.5726659297943115,
+        "r2_time_shuffle": -3.8789308071136475
+      },
+      "hook+action:critic.penult": {
+        "r2": -3.523418664932251,
+        "r2_time_shuffle": -3.7950761318206787
+      }
+    }
+  },
+  "bellman": {
+    "penult_to_V_R2": -6.954222679138184,
+    "penult_to_y_R2": -6.8799662590026855,
+    "delta_R2_y_minus_V": 0.07425642013549805,
+    "corr_td_err_with_penult_norm": 0.043610727452363336
+  }
+}
