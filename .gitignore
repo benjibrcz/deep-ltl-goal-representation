@@ -26,3 +26,11 @@ interpretability/working_scripts/**/*.log
 interpretability/zone_env/results/**
 interpretability/zone_env/figs/**
 interpretability/zone_env/datasets/**
+
+# Top-level repos artifacts (keep folder structure via .gitkeep)
+results/**
+!results/.gitkeep
+figures/**
+!figures/.gitkeep
+datasets/**
+!datasets/.gitkeep
