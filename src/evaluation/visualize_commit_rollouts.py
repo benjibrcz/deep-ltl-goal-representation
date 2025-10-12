@@ -55,10 +55,10 @@ def group_segments_by_label(xs: np.ndarray, ys: np.ndarray, labels: List[str]) -
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--env-id', type=str, default='PointLtl2-v0')
-    ap.add_argument('--csv', type=str, default=str(Path(__file__).resolve().parents[2] / 'interpretability' / 'commit_labels.csv'))
+    ap.add_argument('--csv', type=str, default=str(Path(__file__).resolve().parents[2] / 'interpretability' / 'zone_env' / 'results' / 'commit_labels.csv'))
     ap.add_argument('--episodes', type=int, default=8)
     ap.add_argument('--start-episode', type=int, default=0)
-    ap.add_argument('--out', type=str, default=str(Path(__file__).resolve().parents[2] / 'interpretability' / 'audit_plots' / 'commit_viz_grid.png'))
+    ap.add_argument('--out', type=str, default=str(Path(__file__).resolve().parents[2] / 'interpretability' / 'zone_env' / 'audit_plots' / 'commit_viz_grid.png'))
     args = ap.parse_args()
 
     df = pd.read_csv(args.csv)

@@ -54,7 +54,7 @@ def main():
     ap.add_argument('--colours', type=str, default='blue,green,yellow,magenta')
     ap.add_argument('--max-steps', type=int, default=300)
     ap.add_argument('--num-loops', type=int, default=1)
-    ap.add_argument('--out-csv', type=str, default=str(Path(__file__).resolve().parents[2] / 'interpretability' / 'commit_labels.csv'))
+    ap.add_argument('--out-csv', type=str, default=str(Path(__file__).resolve().parents[2] / 'interpretability' / 'zone_env' / 'results' / 'commit_labels.csv'))
     # thresholds
     ap.add_argument('--diverge_rel_thresh', type=float, default=0.02)
     ap.add_argument('--cos_margin', type=float, default=0.15)
