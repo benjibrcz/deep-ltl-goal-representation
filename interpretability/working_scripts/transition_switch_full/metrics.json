@@ -1,8 +1,0 @@
-{
-  "r2_test": 0.059415222398331816,
-  "alpha": 10.0,
-  "n_pairs": 87,
-  "use_actions": true,
-  "use_goal": true,
-  "use_obs": true
-}

@@ -12,3 +12,25 @@ multiple_results/
 *.fish
 paper_utils
 ldba.png
+
+# OS cruft
+.DS_Store
+
+# Zone env artifacts (outputs separated from scripts)
+interpretability/zone_env/working_scripts/_outputs/**
+interpretability/zone_env/results/**
+interpretability/zone_env/figures/**
+interpretability/zone_env/datasets/**
+
+# Letter world artifacts
+interpretability/letter_world/results/**
+interpretability/letter_world/figures/**
+interpretability/letter_world/datasets/**
+
+# Top-level repos artifacts (keep folder structure via .gitkeep)
+results/**
+!results/.gitkeep
+figures/**
+!figures/.gitkeep
+datasets/**
+!datasets/.gitkeep

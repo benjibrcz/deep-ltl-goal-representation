@@ -1,0 +1,4 @@
+delta_ce_obs,feature,n,shift,target
+-0.22503715448892314,actor_prelogits,4709,1,on_letter_next
+-0.22503715448892314,actor_mid,4709,1,on_letter_next
+0.9388526115182265,obs_conv,4709,1,on_letter_next

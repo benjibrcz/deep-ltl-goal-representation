@@ -1,0 +1,5 @@
+alpha,n,flip,flip_rate,base,targ_on_base,targeted_rate,nonbase,to_target_nonbase,collateral_rate
+0.0,4,0,0.0,2,0,0.0,2,0,0.0
+0.25,4,0,0.0,2,0,0.0,2,0,0.0
+0.5,4,1,0.25,2,0,0.0,2,0,0.0
+1.0,4,1,0.25,2,0,0.0,2,0,0.0

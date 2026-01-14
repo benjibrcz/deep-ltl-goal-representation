@@ -1,0 +1,16 @@
+{"t": 0, "alpha": 0.0, "base_action": 3, "patched_action": 3, "targeted": 0, "kl": 0.0, "margin_delta": 0.0}
+{"t": 0, "alpha": 0.25, "base_action": 3, "patched_action": 3, "targeted": 0, "kl": 0.005252909380942583, "z_l2": 0.2500000298023224, "margin_delta": 0.011565923690795898}
+{"t": 0, "alpha": 0.5, "base_action": 3, "patched_action": 0, "targeted": 0, "kl": 0.021029021590948105, "z_l2": 0.5000000596046448, "margin_delta": -0.05817598104476929}
+{"t": 0, "alpha": 1.0, "base_action": 3, "patched_action": 0, "targeted": 0, "kl": 0.08372433483600616, "z_l2": 0.9999999403953552, "margin_delta": 0.28249943256378174}
+{"t": 1, "alpha": 0.0, "base_action": 3, "patched_action": 3, "targeted": 0, "kl": 0.0, "z_l2": 0.9999999403953552, "margin_delta": 0.0}
+{"t": 1, "alpha": 0.25, "base_action": 3, "patched_action": 3, "targeted": 0, "kl": 0.003842037171125412, "z_l2": 0.25, "margin_delta": -0.025130510330200195}
+{"t": 1, "alpha": 0.5, "base_action": 3, "patched_action": 3, "targeted": 0, "kl": 0.0154085922986269, "z_l2": 0.5, "margin_delta": -0.11603105068206787}
+{"t": 1, "alpha": 1.0, "base_action": 3, "patched_action": 3, "targeted": 0, "kl": 0.061785489320755005, "z_l2": 1.0, "margin_delta": -0.3886503577232361}
+{"t": 2, "alpha": 0.0, "base_action": 0, "patched_action": 0, "targeted": 0, "kl": 0.0, "z_l2": 1.0, "margin_delta": 0.0}
+{"t": 2, "alpha": 0.25, "base_action": 0, "patched_action": 0, "targeted": 0, "kl": 0.002873018616810441, "z_l2": 0.25, "margin_delta": 0.0794370174407959}
+{"t": 2, "alpha": 0.5, "base_action": 0, "patched_action": 0, "targeted": 0, "kl": 0.011094024404883385, "z_l2": 0.5, "margin_delta": 0.1588735580444336}
+{"t": 2, "alpha": 1.0, "base_action": 0, "patched_action": 0, "targeted": 0, "kl": 0.04137291759252548, "z_l2": 1.0, "margin_delta": 0.31774723529815674}
+{"t": 3, "alpha": 0.0, "base_action": 0, "patched_action": 0, "targeted": 0, "kl": 0.0, "z_l2": 1.0, "margin_delta": 0.0}
+{"t": 3, "alpha": 0.25, "base_action": 0, "patched_action": 0, "targeted": 0, "kl": 0.00504509499296546, "z_l2": 0.25, "margin_delta": 0.08466637134552002}
+{"t": 3, "alpha": 0.5, "base_action": 0, "patched_action": 0, "targeted": 0, "kl": 0.01990542560815811, "z_l2": 0.4999999701976776, "margin_delta": 0.16410326957702637}
+{"t": 3, "alpha": 1.0, "base_action": 0, "patched_action": 0, "targeted": 0, "kl": 0.07708019018173218, "z_l2": 1.0, "margin_delta": 0.3229769468307495}
