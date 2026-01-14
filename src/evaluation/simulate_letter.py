@@ -35,8 +35,9 @@ torch.random.manual_seed(seed)
 # sampler = AvoidSampler.partial(depth=6, num_conjuncts=1)
 # sampler = AvoidMultipleSampler.partial(depth=1, num_avoid=2)
 # sampler = FixedSampler.partial('GF k & GF e & G (h => F f)')
-# sampler = FixedSampler.partial('F (a & (!d U c))')
-sampler = FixedSampler.partial('F ((a | b) & (GF k & GF e))')
+sampler = FixedSampler.partial('F (a & (!d U c))')
+#sampler = FixedSampler.partial('F ((a | b) & (GF k & GF e))')
+#sampler = FixedSampler.partial('F (a | b)')
 
 deterministic = False
 
@@ -52,7 +53,7 @@ props = set(env.get_propositions())
 search = ExhaustiveSearch(model, props, num_loops=2)
 agent = Agent(model, search=search, propositions=props, verbose=render is not None)
 
-num_episodes = 10
+num_episodes = 30
 
 num_successes = 0
 num_violations = 0

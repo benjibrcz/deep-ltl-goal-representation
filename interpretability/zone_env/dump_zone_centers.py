@@ -60,7 +60,7 @@ def main():
     ap.add_argument("--parquet", required=True)
     ap.add_argument("--colors", default="green,blue,yellow,magenta")
     ap.add_argument("--out_json", default="interpretability/zone_env/results/zone_centers.json")
-    ap.add_argument("--plot_dir", default="interpretability/zone_env/figs/zone_centers_plots")
+    ap.add_argument("--plot_dir", default="interpretability/zone_env/figures/zone_centers_plots")
     ap.add_argument("--min_points", type=int, default=12, help="min points to run KMeans")
     ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()

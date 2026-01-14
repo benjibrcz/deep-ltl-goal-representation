@@ -16,16 +16,16 @@ ldba.png
 # OS cruft
 .DS_Store
 
-# Heavy experiment artifacts (keep code/results summaries, skip bulky blobs)
-interpretability/zone_env/working_scripts/**/*.npz
-interpretability/zone_env/working_scripts/**/*.parquet
-interpretability/zone_env/working_scripts/**/*.jsonl.gz
-interpretability/zone_env/working_scripts/**/*.log
-
-# Zone env artifacts
+# Zone env artifacts (outputs separated from scripts)
+interpretability/zone_env/working_scripts/_outputs/**
 interpretability/zone_env/results/**
-interpretability/zone_env/figs/**
+interpretability/zone_env/figures/**
 interpretability/zone_env/datasets/**
+
+# Letter world artifacts
+interpretability/letter_world/results/**
+interpretability/letter_world/figures/**
+interpretability/letter_world/datasets/**
 
 # Top-level repos artifacts (keep folder structure via .gitkeep)
 results/**

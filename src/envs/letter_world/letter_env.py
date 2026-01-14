@@ -218,6 +218,17 @@ class LetterEnvRenderer:
             self.screen = pygame.display.set_mode((self.screen_size, self.screen_size))
             pygame.display.set_caption('LetterWorld')
             self.clock = pygame.time.Clock()
+            # pygame.init() initializes font too, but keep font.init() safe
+            try:
+                pygame.font.init()
+            except Exception:
+                pass
+        else:
+            # Ensure the font module is available even without a display
+            try:
+                pygame.font.init()
+            except Exception:
+                pass
         self.font = pygame.font.Font(None, int(self.cell_size * 0.75))  # Font size adjusted to cell size
         self.bg_color = (240, 240, 240)  # Soft background color
         self.cell_color = (200, 200, 200)
