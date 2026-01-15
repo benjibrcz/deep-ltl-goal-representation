@@ -1,8 +1,24 @@
 # Transition Function Experiments: Zone Environment
 
+## Example Trajectories
+
+| Simple Reach | Reach-Avoid | Safety |
+|:---:|:---:|:---:|
+| ![Simple Reach](figures/simple_reach_example.png) | ![Reach-Avoid](figures/reach_avoid_example.png) | ![Safety](figures/safety_example.png) |
+| `F blue` | `!yellow U blue` | `(F green \| F yellow) & G !blue` |
+
+| Optimality (Sequencing) | Infinite Horizon |
+|:---:|:---:|
+| ![Optimality](figures/optimality_example.png) | ![Infinite Horizon](figures/infinite_horizon_example.png) |
+| `F (blue & F green)` | `G F blue & G F green` |
+
+*Trajectories colored from dark (start) to bright (end). Numbers indicate zone visit order.*
+
+---
+
 ## Summary
 
-We ran five experiments (three behavioral, two probing) to test whether the zone environment agent has learned a transition function (world model) that enables planning:
+We ran eight experiments (six behavioral, two probing) to test whether the zone environment agent has learned a transition function (world model) that enables planning:
 
 | Experiment | Type | Evidence for Planning? | Key Finding |
 |------------|------|----------------------|-------------|
@@ -11,6 +27,9 @@ We ran five experiments (three behavioral, two probing) to test whether the zone
 | Sequencing | Behavioral | **Partial** | 59% correct order (better than 39% distance heuristic) |
 | Value Anticipation | Behavioral | **No** | Value doesn't drop before obstacle contact |
 | Position Probing | Representational | **No** | Hidden state can't predict next position (R²=0.61) |
+| Paper: Optimality | Behavioral | **No** | 50% chose greedy when greedy ≠ optimal |
+| Paper: Safety | Behavioral | **YES** | 0% safety violations - never touched forbidden zones |
+| Paper: Infinite Horizon | Behavioral | **YES** | 3.2 avg visits per goal, alternating successfully |
 
 **Overall conclusion**: The agent has NOT learned a general transition function for planning. It relies on:
 1. **Distance-based heuristics** for goal selection
@@ -157,6 +176,88 @@ We ran five experiments (three behavioral, two probing) to test whether the zone
 
 ---
 
+## Experiment 6-8: Paper Capability Tests (Figure 1)
+
+These experiments directly test the three capabilities claimed in the DeepLTL paper Figure 1.
+
+### 6a. Optimality Test
+
+**Question**: Does the agent choose globally optimal paths over greedy/myopic ones?
+
+**Setup** (from paper Figure 1b):
+- Task: `F (blue & F green)` - reach blue, then green
+- Myopic approach: Go to nearest blue first
+- Optimal approach: Go to farther blue if it's closer to green
+
+**Results** (N=50):
+
+| Metric | Value |
+|--------|-------|
+| Path efficiency (optimal/actual) | 88% |
+| Scenarios where greedy ≠ optimal | 6 |
+| Chose greedy when greedy ≠ optimal | **50%** |
+
+**Interpretation**: **NO OPTIMAL PLANNING**. When the greedy choice differs from optimal, agent chooses randomly (50/50). The 88% efficiency comes from the fact that greedy is often close to optimal, not from planning.
+
+### 6b. Safety Test
+
+**Question**: Does the agent avoid forbidden zones when given a choice of goals?
+
+**Setup** (from paper Figure 1c):
+- Task: `(F green | F yellow) & G !blue` - reach green OR yellow while ALWAYS avoiding blue
+- Tests if agent can satisfy safety constraint
+
+**Results** (N=50):
+
+| Metric | Value |
+|--------|-------|
+| Safety violations | **0%** |
+| Reached green | 90% |
+| Reached yellow | 22% |
+| Chose nearer goal | 68% |
+
+**Interpretation**: **STRONG SAFETY CAPABILITY**. The agent never violated the safety constraint (touched blue) in 50 scenarios. This is remarkable and suggests the LTL automaton / sequence planner enforces safety constraints effectively.
+
+### 6c. Infinite Horizon Test
+
+**Question**: Can the agent repeatedly visit multiple goals indefinitely?
+
+**Setup** (from paper Figure 1a):
+- Task: `G F blue & G F green` - infinitely often visit blue AND green
+- Tests ω-regular task capability
+
+**Results** (N=50, 300 steps each):
+
+| Metric | Value |
+|--------|-------|
+| Average blue visits | 4.3 |
+| Average green visits | 5.3 |
+| Average alternating visits | **3.2** |
+
+**Interpretation**: **INFINITE HORIZON CAPABILITY CONFIRMED**. Agent successfully alternates between visiting both colors multiple times per episode.
+
+### Key Insight: Where Does Planning Come From?
+
+The results reveal a critical distinction:
+
+| Capability | Evidence? | Mechanism |
+|------------|-----------|-----------|
+| Safety (G !blue) | **YES** (0% violations) | LTL automaton constraints |
+| Infinite horizon | **YES** (3.2 alternations) | LTL goal sequencing |
+| Optimal path planning | **NO** (50% greedy) | NOT learned |
+
+**Conclusion**: The agent's "planning" capabilities come from the **LTL sequence search / automaton**, NOT from a learned transition function or world model. The neural network provides:
+- Distance-based goal selection
+- Reactive obstacle avoidance
+- Value estimates for the current state
+
+But it does NOT provide:
+- Predictive world model
+- Multi-step path planning
+- Anticipatory obstacle avoidance
+
+---
+
 ## What These Results Mean
 
 ### The Agent DOES Have:
@@ -208,6 +309,7 @@ The position probing experiment confirmed the behavioral findings:
 - `forced_detour/` - Obstacle detour experiment
 - `sequencing/` - Multi-goal sequencing experiment
 - `value_anticipation/` - Value anticipation analysis
+- `paper_capabilities/` - Paper Figure 1 capability tests
 
 **Probing experiments** (in `interpretability/zone_env/results/`):
 - `position_probing/` - Position/next-position linear probes
@@ -218,6 +320,15 @@ The position probing experiment confirmed the behavioral findings:
 - `sequencing_e2e.py` - Sequencing experiment
 - `value_anticipation.py` - Value anticipation analysis
 - `position_probing.py` - Position probing experiment
+- `paper_capabilities_test.py` - Paper Figure 1 tests (optimality, safety, infinite horizon)
+- `generate_trajectory_plots.py` - Generate example trajectory visualizations
+
+**Figures** (in `figures/`):
+- `simple_reach_example.png` - Simple reach task trajectory
+- `reach_avoid_example.png` - Reach-avoid task trajectory
+- `safety_example.png` - Safety constraint task trajectory
+- `optimality_example.png` - Two-goal sequencing trajectory
+- `infinite_horizon_example.png` - Infinite horizon (repeated visits) trajectory
 
 ---
 *Updated January 2026*
